@@ -9,21 +9,23 @@
 /* Begin PBXBuildFile section */
 		512BAB1C292A5021004F1D61 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512BAB1B292A5021004F1D61 /* AppDelegate.swift */; };
 		512BAB1E292A5021004F1D61 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512BAB1D292A5021004F1D61 /* SceneDelegate.swift */; };
-		512BAB20292A5021004F1D61 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512BAB1F292A5021004F1D61 /* ViewController.swift */; };
 		512BAB23292A5021004F1D61 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 512BAB21292A5021004F1D61 /* Main.storyboard */; };
 		512BAB25292A5024004F1D61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 512BAB24292A5024004F1D61 /* Assets.xcassets */; };
 		512BAB28292A5024004F1D61 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 512BAB26292A5024004F1D61 /* LaunchScreen.storyboard */; };
+		512BAB36292A697E004F1D61 /* CoinMarkets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512BAB35292A697E004F1D61 /* CoinMarkets.swift */; };
+		512BAB38292A7865004F1D61 /* MarketTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512BAB37292A7865004F1D61 /* MarketTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		512BAB18292A5021004F1D61 /* CoinBackpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoinBackpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		512BAB1B292A5021004F1D61 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		512BAB1D292A5021004F1D61 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		512BAB1F292A5021004F1D61 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		512BAB22292A5021004F1D61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		512BAB24292A5024004F1D61 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		512BAB27292A5024004F1D61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		512BAB29292A5024004F1D61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		512BAB35292A697E004F1D61 /* CoinMarkets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinMarkets.swift; sourceTree = "<group>"; };
+		512BAB37292A7865004F1D61 /* MarketTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +58,64 @@
 		512BAB1A292A5021004F1D61 /* CoinBackpack */ = {
 			isa = PBXGroup;
 			children = (
-				512BAB1B292A5021004F1D61 /* AppDelegate.swift */,
-				512BAB1D292A5021004F1D61 /* SceneDelegate.swift */,
-				512BAB1F292A5021004F1D61 /* ViewController.swift */,
-				512BAB21292A5021004F1D61 /* Main.storyboard */,
-				512BAB24292A5024004F1D61 /* Assets.xcassets */,
-				512BAB26292A5024004F1D61 /* LaunchScreen.storyboard */,
-				512BAB29292A5024004F1D61 /* Info.plist */,
+				512BAB33292A690C004F1D61 /* Models */,
+				512BAB34292A6924004F1D61 /* Services */,
+				512BAB32292A68FC004F1D61 /* ViewControllers */,
+				512BAB31292A68E7004F1D61 /* Storyboards */,
+				512BAB30292A68D5004F1D61 /* Sourse */,
+				512BAB2F292A68B4004F1D61 /* SupportingFiles */,
 			);
 			path = CoinBackpack;
+			sourceTree = "<group>";
+		};
+		512BAB2F292A68B4004F1D61 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				512BAB1B292A5021004F1D61 /* AppDelegate.swift */,
+				512BAB1D292A5021004F1D61 /* SceneDelegate.swift */,
+				512BAB29292A5024004F1D61 /* Info.plist */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		512BAB30292A68D5004F1D61 /* Sourse */ = {
+			isa = PBXGroup;
+			children = (
+				512BAB24292A5024004F1D61 /* Assets.xcassets */,
+			);
+			path = Sourse;
+			sourceTree = "<group>";
+		};
+		512BAB31292A68E7004F1D61 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				512BAB21292A5021004F1D61 /* Main.storyboard */,
+				512BAB26292A5024004F1D61 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		512BAB32292A68FC004F1D61 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				512BAB37292A7865004F1D61 /* MarketTableViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		512BAB33292A690C004F1D61 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				512BAB35292A697E004F1D61 /* CoinMarkets.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		512BAB34292A6924004F1D61 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,7 +189,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				512BAB20292A5021004F1D61 /* ViewController.swift in Sources */,
+				512BAB38292A7865004F1D61 /* MarketTableViewController.swift in Sources */,
+				512BAB36292A697E004F1D61 /* CoinMarkets.swift in Sources */,
 				512BAB1C292A5021004F1D61 /* AppDelegate.swift in Sources */,
 				512BAB1E292A5021004F1D61 /* SceneDelegate.swift in Sources */,
 			);
@@ -289,7 +341,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = LBKPR9U7Q9;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = CoinBackpack/Info.plist;
+				INFOPLIST_FILE = CoinBackpack/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -317,7 +369,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = LBKPR9U7Q9;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = CoinBackpack/Info.plist;
+				INFOPLIST_FILE = CoinBackpack/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

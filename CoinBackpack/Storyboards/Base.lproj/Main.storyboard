@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="KL3-ej-5a1">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Coin BackPack-->
+        <scene sceneID="cQw-5G-kN4">
+            <objects>
+                <viewController id="PRW-vY-Lf8" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sT1-Ny-P6o">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="7lg-82-uRM">
+                                <rect key="frame" x="15" y="123" width="384" height="53"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1232421.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vBG-aX-R7p">
+                                        <rect key="frame" x="0.0" y="0.0" width="233" height="53"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="35"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qHC-Yd-EYG">
+                                        <rect key="frame" x="233" y="0.0" width="58" height="53"/>
+                                        <menu key="menu" id="ccG-qs-pK0">
+                                            <children>
+                                                <command title="rub" id="ITN-Dh-KRQ"/>
+                                                <command title="usd" id="YZW-1k-36b"/>
+                                            </children>
+                                        </menu>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w9g-dk-4hh">
+                                        <rect key="frame" x="291" y="0.0" width="93" height="53"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="35"/>
+                                        <menu key="menu" id="NaG-lT-K8k">
+                                            <children>
+                                                <command title="RUB" id="Xuw-na-7Hx"/>
+                                                <command title="USD" id="Bmw-eb-7ee"/>
+                                            </children>
+                                        </menu>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="tpC-1Q-g03"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="tpC-1Q-g03" firstAttribute="trailing" secondItem="7lg-82-uRM" secondAttribute="trailing" constant="15" id="K6L-vi-EjY"/>
+                            <constraint firstItem="7lg-82-uRM" firstAttribute="top" secondItem="tpC-1Q-g03" secondAttribute="top" constant="35" id="afr-xG-rHQ"/>
+                            <constraint firstItem="7lg-82-uRM" firstAttribute="leading" secondItem="tpC-1Q-g03" secondAttribute="leading" constant="15" id="l0w-Ke-0cZ"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="033-eH-zgc"/>
+                    <navigationItem key="navigationItem" title="Coin BackPack" id="EzY-vd-vZq"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ve0-Hb-b74" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4496" y="169"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="BDT-hk-XvZ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KL3-ej-5a1" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="QHN-q9-U7x">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="eP3-Np-HLW" kind="relationship" relationship="rootViewController" id="zXa-bT-M22"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sOd-Bn-7xY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3013.04347826087" y="168.75"/>
+        </scene>
+        <!--Coin Backpack-->
+        <scene sceneID="8vi-v6-rUs">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="eP3-Np-HLW" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Coin Backpack" id="4yk-mk-5js"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="S4y-QZ-svW">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="PRW-vY-Lf8" kind="relationship" relationship="viewControllers" id="kWA-7P-yrU"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xxC-bD-F92" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3751" y="169"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
