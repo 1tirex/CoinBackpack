@@ -14,6 +14,12 @@
 		512BAB28292A5024004F1D61 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 512BAB26292A5024004F1D61 /* LaunchScreen.storyboard */; };
 		512BAB36292A697E004F1D61 /* CoinMarkets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512BAB35292A697E004F1D61 /* CoinMarkets.swift */; };
 		512BAB38292A7865004F1D61 /* MarketTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512BAB37292A7865004F1D61 /* MarketTableViewController.swift */; };
+		51D27DD4292BB35E00B8A7AD /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D27DD3292BB35E00B8A7AD /* MainViewController.swift */; };
+		51D27DD7292BDE0C00B8A7AD /* MarketTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D27DD6292BDE0C00B8A7AD /* MarketTableViewCell.swift */; };
+		51D27DD9292BE04A00B8A7AD /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D27DD8292BE04A00B8A7AD /* NetworkManager.swift */; };
+		51D7243D292CEF0C00863E7C /* CryptoIconURLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D7243C292CEF0C00863E7C /* CryptoIconURLBuilder.swift */; };
+		51D72440292D3A9000863E7C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 51D7243F292D3A9000863E7C /* Alamofire */; };
+		51D72442292D5AC800863E7C /* CreateLinkForMarkets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D72441292D5AC800863E7C /* CreateLinkForMarkets.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +32,11 @@
 		512BAB29292A5024004F1D61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		512BAB35292A697E004F1D61 /* CoinMarkets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinMarkets.swift; sourceTree = "<group>"; };
 		512BAB37292A7865004F1D61 /* MarketTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketTableViewController.swift; sourceTree = "<group>"; };
+		51D27DD3292BB35E00B8A7AD /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		51D27DD6292BDE0C00B8A7AD /* MarketTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketTableViewCell.swift; sourceTree = "<group>"; };
+		51D27DD8292BE04A00B8A7AD /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		51D7243C292CEF0C00863E7C /* CryptoIconURLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoIconURLBuilder.swift; sourceTree = "<group>"; };
+		51D72441292D5AC800863E7C /* CreateLinkForMarkets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateLinkForMarkets.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51D72440292D3A9000863E7C /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +73,7 @@
 				512BAB33292A690C004F1D61 /* Models */,
 				512BAB34292A6924004F1D61 /* Services */,
 				512BAB32292A68FC004F1D61 /* ViewControllers */,
+				51D27DD5292BDDD600B8A7AD /* Views */,
 				512BAB31292A68E7004F1D61 /* Storyboards */,
 				512BAB30292A68D5004F1D61 /* Sourse */,
 				512BAB2F292A68B4004F1D61 /* SupportingFiles */,
@@ -98,6 +111,7 @@
 		512BAB32292A68FC004F1D61 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				51D27DD3292BB35E00B8A7AD /* MainViewController.swift */,
 				512BAB37292A7865004F1D61 /* MarketTableViewController.swift */,
 			);
 			path = ViewControllers;
@@ -107,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				512BAB35292A697E004F1D61 /* CoinMarkets.swift */,
+				51D7243C292CEF0C00863E7C /* CryptoIconURLBuilder.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -114,8 +129,18 @@
 		512BAB34292A6924004F1D61 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				51D72441292D5AC800863E7C /* CreateLinkForMarkets.swift */,
+				51D27DD8292BE04A00B8A7AD /* NetworkManager.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		51D27DD5292BDDD600B8A7AD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				51D27DD6292BDE0C00B8A7AD /* MarketTableViewCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,6 +159,9 @@
 			dependencies = (
 			);
 			name = CoinBackpack;
+			packageProductDependencies = (
+				51D7243F292D3A9000863E7C /* Alamofire */,
+			);
 			productName = CoinBackpack;
 			productReference = 512BAB18292A5021004F1D61 /* CoinBackpack.app */;
 			productType = "com.apple.product-type.application";
@@ -162,6 +190,9 @@
 				Base,
 			);
 			mainGroup = 512BAB0F292A5021004F1D61;
+			packageReferences = (
+				51D7243E292D3A9000863E7C /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			productRefGroup = 512BAB19292A5021004F1D61 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -190,9 +221,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				512BAB38292A7865004F1D61 /* MarketTableViewController.swift in Sources */,
+				51D7243D292CEF0C00863E7C /* CryptoIconURLBuilder.swift in Sources */,
 				512BAB36292A697E004F1D61 /* CoinMarkets.swift in Sources */,
+				51D72442292D5AC800863E7C /* CreateLinkForMarkets.swift in Sources */,
 				512BAB1C292A5021004F1D61 /* AppDelegate.swift in Sources */,
 				512BAB1E292A5021004F1D61 /* SceneDelegate.swift in Sources */,
+				51D27DD4292BB35E00B8A7AD /* MainViewController.swift in Sources */,
+				51D27DD7292BDE0C00B8A7AD /* MarketTableViewCell.swift in Sources */,
+				51D27DD9292BE04A00B8A7AD /* NetworkManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +381,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -373,6 +410,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -410,6 +448,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		51D7243E292D3A9000863E7C /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		51D7243F292D3A9000863E7C /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 51D7243E292D3A9000863E7C /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 512BAB10292A5021004F1D61 /* Project object */;
 }

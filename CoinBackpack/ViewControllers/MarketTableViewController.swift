@@ -8,82 +8,151 @@
 import UIKit
 
 class MarketTableViewController: UITableViewController {
-
+    
+    //MARK: Private properties
+    private var markets: CoinMarkets?
+    private var filteredMarket: [MarketsInfo] = []
+    
+    private let searchController = UISearchController(searchResultsController: nil)
+    private var searchBarIsEmpty: Bool {
+        guard let text = searchController.searchBar.text else { return false }
+        return text.isEmpty
+    }
+    private var isFiltering: Bool {
+        return searchController.isActive && !searchBarIsEmpty
+    }
+    
+    var delegate: AddCoinViewControllerDelegate!
+//    MarketTableViewController.delegate = self
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        tableView.rowHeight = 70
+        tableView.backgroundColor = .black
+        
+        setupSearchController()
+        setupNavigationBar()
     }
-
+    
     // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        isFiltering ? filteredMarket.count : markets?.markets.count ?? 0
     }
-
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: "cell",
+            for: indexPath) as? MarketTableViewCell
+        else {
+            return UITableViewCell()
+        }
+        
+        let coinOnMarket = isFiltering
+        ? filteredMarket[indexPath.row]
+        : markets?.markets[indexPath.row]
+        cell.configure(with: coinOnMarket)
+        
         return cell
     }
-    */
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            tableView.deselectRow(at: indexPath, animated: true)
+        let selectCoin = isFiltering
+        ? filteredMarket[indexPath.row]
+        : markets?.markets[indexPath.row]
+        delegate?.sendPostRequest(with: selectCoin)
+        self.navigationController?.popToRootViewController(animated: true)
     }
-    */
-
+    
     /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
+    // MARK: - IBAction
+    @IBAction func allCoins(_ sender: UIBarButtonItem) {
+        fetchData(from: "all")
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    // MARK: - Private methods
+    private func fetchData(from url: String?) {
+        NetworkManager.shared.fetch(type: CoinMarkets.self, next: url) { result in
+            switch result {
+            case .success(let loadMarket):
+                self.markets = loadMarket
+                self.tableView.reloadData()
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+    
+    private func fetchSearch(from coin: String?) {
+        NetworkManager.shared.fetch(type: CoinMarkets.self, coin: coin?.lowercased()) { result in
+            switch result {
+            case .success(let loadCoin):
+                self.filterContentForSearchText(coin ?? "", loadCoin.markets)
+                self.tableView.reloadData()
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    private func filterContentForSearchText(_ searchText: String, _ loadMarket: [MarketsInfo]) {
+        filteredMarket = loadMarket.filter { market in
+            market.baseAsset.uppercased() == searchText.uppercased()
+        }
+        tableView.reloadData()
     }
-    */
+    
+    private func setupSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search"
+        searchController.searchBar.barTintColor = .white
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+        
+        if let textField = searchController.searchBar.value(forKey: "searchField") as? UITextField {
+            textField.font = UIFont.boldSystemFont(ofSize: 17)
+            textField.textColor = .white
+        }
+    }
+    
+    private func setupNavigationBar() {
+        self.navigationItem.title = "Search"
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.backgroundColor = .black
+        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        
+        navigationController?.navigationBar.standardAppearance = navBarAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+    }
+}
 
+    // MARK: - Extension
+extension MarketTableViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        fetchSearch(from: searchController.searchBar.text ?? "")
+    }
+    
+    func fetchMarkets() {
+        NetworkManager.shared.fetch(type: CoinMarkets.self) { result in
+            switch result {
+            case .success(let loadMarkets):
+                self.markets = loadMarkets
+                self.tableView.reloadData()
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }
