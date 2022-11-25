@@ -8,17 +8,18 @@
 import UIKit
 
 protocol AddCoinViewControllerDelegate {
-    func sendPostRequest(with data: MarketsInfo?)
+    func sendPostRequest(with data: MarketsInfo)
 }
 
 class MainViewController: UIViewController {
 
-    @IBOutlet var tableView: UITableView!
-    @IBOutlet var walletLabel: UILabel!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var walletLabel: UILabel!
     private var addCoin: [MarketsInfo] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.rowHeight = 70
         
         tableView.dataSource = self
         setupNavigationBar()
@@ -64,29 +65,28 @@ extension MainViewController: UITableViewDataSource {
         
         let coinOnMarket = addCoin[indexPath.row]
         cell.configure(with: coinOnMarket)
-
         return cell
     }
 }
 
 extension MainViewController: AddCoinViewControllerDelegate {
-    func sendPostRequest(with data: MarketsInfo?) {
-        guard let data = data else { return }
+    func sendPostRequest(with data: MarketsInfo) {
+
         self.addCoin.append(data)
         self.tableView.reloadData()
 
-//        NetworkManager.shared.sendPostRequest(to: Link.postRequest.rawValue, with: data) { result in
-//            switch result {
-//            case .success(let coin):
-//                self.addCoin.append(coin)
-//                self.tableView.insertRows(
-//                    at: [IndexPath(row: (self.addCoin.count ) - 1, section: 0)],
-//                    with: .automatic
-//                )
-//                self.tableView.reloadData()
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
+        NetworkManager.shared.sendPostRequest(from: .postRequest, with: data ) { result in
+            switch result {
+            case .success(let coin):
+                self.addCoin.append(coin)
+                self.tableView.insertRows(
+                    at: [IndexPath(row: (self.addCoin.count ) - 1, section: 0)],
+                    with: .automatic
+                )
+                self.tableView.reloadData()
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }

@@ -23,7 +23,6 @@ class MarketTableViewController: UITableViewController {
     }
     
     var delegate: AddCoinViewControllerDelegate!
-//    MarketTableViewController.delegate = self
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,32 +59,33 @@ class MarketTableViewController: UITableViewController {
         let selectCoin = isFiltering
         ? filteredMarket[indexPath.row]
         : markets?.markets[indexPath.row]
-        delegate?.sendPostRequest(with: selectCoin)
-        self.navigationController?.popToRootViewController(animated: true)
+//        delegate?.sendPostRequest(with: selectCoin)
+//        self.navigationController?.popToRootViewController(animated: true)
+        performSegue(withIdentifier: "addCoin", sender: selectCoin)
     }
     
-    /*
      // MARK: - Navigation
      
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
+         guard let datailVC = segue.destination as? DatailViewController else { return }
+         datailVC.fetchName(from: sender as? MarketsInfo)
+         datailVC.selectedCoins = sender as? MarketsInfo
+         datailVC.delegate = delegate
      }
-     */
     
     // MARK: - IBAction
     @IBAction func allCoins(_ sender: UIBarButtonItem) {
-        fetchData(from: "all")
+        fetchData(for: .marketsAll)
     }
     
     // MARK: - Private methods
-    private func fetchData(from url: String?) {
-        NetworkManager.shared.fetch(type: CoinMarkets.self, next: url) { result in
+    private func fetchData(for type: CreateLink.TypeLink?) {
+        NetworkManager.shared.fetch(type: CoinMarkets.self, needFor: type ?? .nothing) {
+            [weak self] result in
             switch result {
             case .success(let loadMarket):
-                self.markets = loadMarket
-                self.tableView.reloadData()
+                self?.markets = loadMarket
+                self?.tableView.reloadData()
             case .failure(let error):
                 print(error)
             }
@@ -93,11 +93,12 @@ class MarketTableViewController: UITableViewController {
     }
     
     private func fetchSearch(from coin: String?) {
-        NetworkManager.shared.fetch(type: CoinMarkets.self, coin: coin?.lowercased()) { result in
+        NetworkManager.shared.fetch(type: CoinMarkets.self, needFor: .coinSearch, coin: coin?.lowercased()) {
+            [weak self] result in
             switch result {
             case .success(let loadCoin):
-                self.filterContentForSearchText(coin ?? "", loadCoin.markets)
-                self.tableView.reloadData()
+                self?.filterContentForSearchText(coin ?? "", loadCoin.markets)
+                self?.tableView.reloadData()
             case .failure(let error):
                 print(error)
             }
@@ -145,11 +146,11 @@ extension MarketTableViewController: UISearchResultsUpdating {
     }
     
     func fetchMarkets() {
-        NetworkManager.shared.fetch(type: CoinMarkets.self) { result in
+        NetworkManager.shared.fetch(type: CoinMarkets.self, needFor: .markets) { [weak self] result in
             switch result {
             case .success(let loadMarkets):
-                self.markets = loadMarkets
-                self.tableView.reloadData()
+                self?.markets = loadMarkets
+                self?.tableView.reloadData()
             case .failure(let error):
                 print(error)
             }

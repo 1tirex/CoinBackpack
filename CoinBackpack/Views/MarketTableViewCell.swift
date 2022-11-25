@@ -7,25 +7,17 @@
 
 import UIKit
 
-class MarketTableViewCell: UITableViewCell {
-    @IBOutlet var symbolLabel: UILabel!
-    @IBOutlet var priceLabel: UILabel!
-    @IBOutlet var exchengeLabel: UILabel!
-    @IBOutlet var symbolImage: UIImageView! {
+final class MarketTableViewCell: UITableViewCell {
+    @IBOutlet weak var symbolLabel: UILabel!
+    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var exchengeLabel: UILabel!
+    @IBOutlet weak var symbolImage: UIImageView! {
         didSet {
             symbolImage.contentMode = .scaleAspectFit
             symbolImage.clipsToBounds = true
             symbolImage.layer.cornerRadius = symbolImage.frame.height / 2
-            symbolImage.backgroundColor = .white
+            symbolImage.backgroundColor = .black
         }
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
     }
     
     func configure(with course: MarketsInfo?) {

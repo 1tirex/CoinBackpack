@@ -19,10 +19,11 @@ class NetworkManager {
     
     func fetch<T: Decodable>(type: T.Type,
                              next url: String? = "",
+                             needFor: CreateLink.TypeLink,
                              coin name: String? = "",
                              completion: @escaping(Result<T, NetworkError>) -> Void) {
 
-        let link = CreateLink(next: url ?? "", baseAsset: name ?? "")
+        let link = CreateLink(needLinkFor: needFor, baseAsset: name ?? "")
         print(link.url)
 
         guard let url = URL(string: link.url ) else {
@@ -48,10 +49,14 @@ class NetworkManager {
             }.resume()
         }
     
-    func sendPostRequest(to url: String, with data: MarketsInfo?, completion: @escaping(Result<MarketsInfo, AFError>) -> Void) {
-        AF.request(url, method: .post, parameters: data)
+    func sendPostRequest(from: CreateLink.TypeLink, with data: MarketsInfo, completion: @escaping(Result<MarketsInfo, AFError>) -> Void) {
+        
+        let link = CreateLink(needLinkFor: from)
+        print(link.url)
+        
+        AF.request(link.url, method: .post, parameters: data)
             .validate()
-            .responseDecodable(of: AddCoin.self) { dataResponse in
+            .responseDecodable(of: AddCoinPortfolio.self) { dataResponse in
                 switch dataResponse.result {
                 case .success(let coinJP):
                     let coin = MarketsInfo(coinJP: coinJP)
