@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MarketTableViewController: UITableViewController {
+final class MarketTableViewController: UITableViewController {
     
     //MARK: Private properties
     private var markets: CoinMarkets?
@@ -22,7 +22,7 @@ class MarketTableViewController: UITableViewController {
         return searchController.isActive && !searchBarIsEmpty
     }
     
-    var delegate: AddCoinViewControllerDelegate!
+    var delegate: AddCoinViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,13 +59,10 @@ class MarketTableViewController: UITableViewController {
         let selectCoin = isFiltering
         ? filteredMarket[indexPath.row]
         : markets?.markets[indexPath.row]
-//        delegate?.sendPostRequest(with: selectCoin)
-//        self.navigationController?.popToRootViewController(animated: true)
         performSegue(withIdentifier: "addCoin", sender: selectCoin)
     }
     
      // MARK: - Navigation
-     
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
          guard let datailVC = segue.destination as? DatailViewController else { return }
          datailVC.fetchName(from: sender as? MarketsInfo)
@@ -79,9 +76,9 @@ class MarketTableViewController: UITableViewController {
     }
     
     // MARK: - Private methods
-    private func fetchData(for type: CreateLink.TypeLink?) {
-        NetworkManager.shared.fetch(type: CoinMarkets.self, needFor: type ?? .nothing) {
-            [weak self] result in
+    private func fetchData(for type: CreateLink.TypeLink) {
+        NetworkManager.shared.fetch(type: CoinMarkets.self,
+                                    needFor: type) { [weak self] result in
             switch result {
             case .success(let loadMarket):
                 self?.markets = loadMarket
@@ -92,16 +89,21 @@ class MarketTableViewController: UITableViewController {
         }
     }
     
-    private func fetchSearch(from coin: String?) {
-        NetworkManager.shared.fetch(type: CoinMarkets.self, needFor: .coinSearch, coin: coin?.lowercased()) {
-            [weak self] result in
-            switch result {
-            case .success(let loadCoin):
-                self?.filterContentForSearchText(coin ?? "", loadCoin.markets)
-                self?.tableView.reloadData()
-            case .failure(let error):
-                print(error)
+    private func fetchSearch(from coin: String) {
+        if !coin.isEmpty {
+            NetworkManager.shared.fetch(type: CoinMarkets.self,
+                                        needFor: .coinSearch,
+                                        coin: coin.lowercased()) { [weak self] result in
+                switch result {
+                case .success(let loadCoin):
+                    self?.filterContentForSearchText(coin, loadCoin.markets)
+                    self?.tableView.reloadData()
+                case .failure(let error):
+                    print(error)
+                }
             }
+        } else {
+            fetchMarkets()
         }
     }
     
@@ -113,12 +115,12 @@ class MarketTableViewController: UITableViewController {
     }
     
     private func setupSearchController() {
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search"
-        searchController.searchBar.barTintColor = .white
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
+        self.searchController.searchResultsUpdater = self
+        self.searchController.obscuresBackgroundDuringPresentation = false
+        self.searchController.searchBar.placeholder = "Search"
+        self.searchController.searchBar.barTintColor = .white
+        self.navigationItem.searchController = searchController
+        self.definesPresentationContext = true
         
         if let textField = searchController.searchBar.value(forKey: "searchField") as? UITextField {
             textField.font = UIFont.boldSystemFont(ofSize: 17)
@@ -134,8 +136,8 @@ class MarketTableViewController: UITableViewController {
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         
-        navigationController?.navigationBar.standardAppearance = navBarAppearance
-        navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+        self.navigationController?.navigationBar.standardAppearance = navBarAppearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
     }
 }
 
@@ -146,7 +148,8 @@ extension MarketTableViewController: UISearchResultsUpdating {
     }
     
     func fetchMarkets() {
-        NetworkManager.shared.fetch(type: CoinMarkets.self, needFor: .markets) { [weak self] result in
+        NetworkManager.shared.fetch(type: CoinMarkets.self,
+                                    needFor: .markets) { [weak self] result in
             switch result {
             case .success(let loadMarkets):
                 self?.markets = loadMarkets

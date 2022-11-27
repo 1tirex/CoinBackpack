@@ -21,9 +21,9 @@ final class MarketTableViewCell: UITableViewCell {
     }
     
     func configure(with course: MarketsInfo?) {
-        symbolLabel.text = course?.symbol
-        priceLabel.text = "\(course?.price ?? 0)$"
-        exchengeLabel.text = course?.exchange
-        symbolImage.image = UIImage(named: course?.baseAsset.lowercased() ?? "")
+        self.symbolLabel.text = course?.symbol
+        self.priceLabel.text = "\(course?.price ?? 0)$"
+        self.exchengeLabel.text = course?.exchange
+        self.symbolImage.image = UIImage(named: course?.baseAsset.lowercased() ?? "")
     }
 }

@@ -15,13 +15,13 @@
 		512BAB36292A697E004F1D61 /* CoinMarkets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512BAB35292A697E004F1D61 /* CoinMarkets.swift */; };
 		512BAB38292A7865004F1D61 /* MarketTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512BAB37292A7865004F1D61 /* MarketTableViewController.swift */; };
 		51C4041B29315EFF00FD0DE6 /* AlertController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C4041A29315EFF00FD0DE6 /* AlertController+.swift */; };
-		51D27DD4292BB35E00B8A7AD /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D27DD3292BB35E00B8A7AD /* MainViewController.swift */; };
+		51D27DD4292BB35E00B8A7AD /* MainPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D27DD3292BB35E00B8A7AD /* MainPortfolioViewController.swift */; };
 		51D27DD7292BDE0C00B8A7AD /* MarketTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D27DD6292BDE0C00B8A7AD /* MarketTableViewCell.swift */; };
 		51D27DD9292BE04A00B8A7AD /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D27DD8292BE04A00B8A7AD /* NetworkManager.swift */; };
-		51D7243D292CEF0C00863E7C /* CryptoIconURLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D7243C292CEF0C00863E7C /* CryptoIconURLBuilder.swift */; };
 		51D72440292D3A9000863E7C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 51D7243F292D3A9000863E7C /* Alamofire */; };
 		51D72442292D5AC800863E7C /* CreateLinkForMarkets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D72441292D5AC800863E7C /* CreateLinkForMarkets.swift */; };
 		51DF7433292FD58000C30FE7 /* DatailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DF7432292FD58000C30FE7 /* DatailViewController.swift */; };
+		51F78A9529327EA7006B85EF /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F78A9429327EA7006B85EF /* MainTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,12 +35,12 @@
 		512BAB35292A697E004F1D61 /* CoinMarkets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinMarkets.swift; sourceTree = "<group>"; };
 		512BAB37292A7865004F1D61 /* MarketTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketTableViewController.swift; sourceTree = "<group>"; };
 		51C4041A29315EFF00FD0DE6 /* AlertController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertController+.swift"; sourceTree = "<group>"; };
-		51D27DD3292BB35E00B8A7AD /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		51D27DD3292BB35E00B8A7AD /* MainPortfolioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPortfolioViewController.swift; sourceTree = "<group>"; };
 		51D27DD6292BDE0C00B8A7AD /* MarketTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketTableViewCell.swift; sourceTree = "<group>"; };
 		51D27DD8292BE04A00B8A7AD /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		51D7243C292CEF0C00863E7C /* CryptoIconURLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoIconURLBuilder.swift; sourceTree = "<group>"; };
 		51D72441292D5AC800863E7C /* CreateLinkForMarkets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateLinkForMarkets.swift; sourceTree = "<group>"; };
 		51DF7432292FD58000C30FE7 /* DatailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatailViewController.swift; sourceTree = "<group>"; };
+		51F78A9429327EA7006B85EF /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,7 +116,7 @@
 		512BAB32292A68FC004F1D61 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				51D27DD3292BB35E00B8A7AD /* MainViewController.swift */,
+				51D27DD3292BB35E00B8A7AD /* MainPortfolioViewController.swift */,
 				512BAB37292A7865004F1D61 /* MarketTableViewController.swift */,
 				51DF7432292FD58000C30FE7 /* DatailViewController.swift */,
 			);
@@ -127,7 +127,6 @@
 			isa = PBXGroup;
 			children = (
 				512BAB35292A697E004F1D61 /* CoinMarkets.swift */,
-				51D7243C292CEF0C00863E7C /* CryptoIconURLBuilder.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -152,6 +151,7 @@
 		51D27DD5292BDDD600B8A7AD /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				51F78A9429327EA7006B85EF /* MainTableViewCell.swift */,
 				51D27DD6292BDE0C00B8A7AD /* MarketTableViewCell.swift */,
 			);
 			path = Views;
@@ -234,13 +234,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51F78A9529327EA7006B85EF /* MainTableViewCell.swift in Sources */,
 				512BAB38292A7865004F1D61 /* MarketTableViewController.swift in Sources */,
-				51D7243D292CEF0C00863E7C /* CryptoIconURLBuilder.swift in Sources */,
 				512BAB36292A697E004F1D61 /* CoinMarkets.swift in Sources */,
 				51D72442292D5AC800863E7C /* CreateLinkForMarkets.swift in Sources */,
 				512BAB1C292A5021004F1D61 /* AppDelegate.swift in Sources */,
 				512BAB1E292A5021004F1D61 /* SceneDelegate.swift in Sources */,
-				51D27DD4292BB35E00B8A7AD /* MainViewController.swift in Sources */,
+				51D27DD4292BB35E00B8A7AD /* MainPortfolioViewController.swift in Sources */,
 				51DF7433292FD58000C30FE7 /* DatailViewController.swift in Sources */,
 				51D27DD7292BDE0C00B8A7AD /* MarketTableViewCell.swift in Sources */,
 				51C4041B29315EFF00FD0DE6 /* AlertController+.swift in Sources */,
@@ -409,7 +409,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -438,7 +438,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
