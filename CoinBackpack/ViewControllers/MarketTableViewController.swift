@@ -9,8 +9,10 @@ import UIKit
 
 final class MarketTableViewController: UITableViewController {
     
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    
     //MARK: Private properties
-    private var markets: CoinMarkets?
+
     private var filteredMarket: [MarketsInfo] = []
     
     private let searchController = UISearchController(searchResultsController: nil)
@@ -22,12 +24,16 @@ final class MarketTableViewController: UITableViewController {
         return searchController.isActive && !searchBarIsEmpty
     }
     
+    var markets: [MarketsInfo] = []
     var delegate: AddCoinViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 70
         tableView.backgroundColor = .black
+        self.activityIndicator.stopAnimating()
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
         
         setupSearchController()
         setupNavigationBar()
@@ -35,7 +41,11 @@ final class MarketTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        isFiltering ? filteredMarket.count : markets?.markets.count ?? 0
+        if self.activityIndicator.isAnimating {
+           return 0
+        } else {
+            return isFiltering ? filteredMarket.count : markets.count
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -48,7 +58,7 @@ final class MarketTableViewController: UITableViewController {
         
         let coinOnMarket = isFiltering
         ? filteredMarket[indexPath.row]
-        : markets?.markets[indexPath.row]
+        : markets[indexPath.row]
         cell.configure(with: coinOnMarket)
         
         return cell
@@ -58,7 +68,7 @@ final class MarketTableViewController: UITableViewController {
             tableView.deselectRow(at: indexPath, animated: true)
         let selectCoin = isFiltering
         ? filteredMarket[indexPath.row]
-        : markets?.markets[indexPath.row]
+        : markets[indexPath.row]
         performSegue(withIdentifier: "addCoin", sender: selectCoin)
     }
     
@@ -72,36 +82,42 @@ final class MarketTableViewController: UITableViewController {
     
     // MARK: - IBAction
     @IBAction func allCoins(_ sender: UIBarButtonItem) {
+        activityIndicator.startAnimating()
+        tableView.reloadData()
         fetchData(for: .marketsAll)
     }
     
     // MARK: - Private methods
     private func fetchData(for type: CreateLink.TypeLink) {
-        NetworkManager.shared.fetch(type: CoinMarkets.self,
-                                    needFor: type) { [weak self] result in
-            switch result {
-            case .success(let loadMarket):
-                self?.markets = loadMarket
-                self?.tableView.reloadData()
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
-    
-    private func fetchSearch(from coin: String) {
-        if !coin.isEmpty {
-            NetworkManager.shared.fetch(type: CoinMarkets.self,
-                                        needFor: .coinSearch,
-                                        coin: coin.lowercased()) { [weak self] result in
+        NetworkManager.shared.fetch(
+            type: CoinMarkets.self,
+            needFor: type) { [weak self] result in
                 switch result {
-                case .success(let loadCoin):
-                    self?.filterContentForSearchText(coin, loadCoin.markets)
+                case .success(let loadMarket):
+                    self?.markets = loadMarket.markets
+                    self?.activityIndicator.stopAnimating()
                     self?.tableView.reloadData()
                 case .failure(let error):
                     print(error)
                 }
             }
+    }
+    
+    private func fetchSearch(from coin: String) {
+        if !coin.isEmpty {
+            NetworkManager.shared.fetch(
+                type: CoinMarkets.self,
+                needFor: .coinSearch,
+                coin: coin.lowercased()) { [weak self] result in
+                    switch result {
+                    case .success(let loadCoin):
+                        self?.filterContentForSearchText(coin, loadCoin.markets)
+                        self?.activityIndicator.stopAnimating()
+                        self?.tableView.reloadData()
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
         } else {
             fetchMarkets()
         }
@@ -144,6 +160,7 @@ final class MarketTableViewController: UITableViewController {
     // MARK: - Extension
 extension MarketTableViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
+        activityIndicator.startAnimating()
         fetchSearch(from: searchController.searchBar.text ?? "")
     }
     
@@ -152,7 +169,8 @@ extension MarketTableViewController: UISearchResultsUpdating {
                                     needFor: .markets) { [weak self] result in
             switch result {
             case .success(let loadMarkets):
-                self?.markets = loadMarkets
+                self?.markets = loadMarkets.markets
+                self?.activityIndicator.stopAnimating()
                 self?.tableView.reloadData()
             case .failure(let error):
                 print(error)

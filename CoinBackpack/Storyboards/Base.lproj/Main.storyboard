@@ -175,7 +175,7 @@
             </objects>
             <point key="canvasLocation" x="8034.7826086956529" y="500.89285714285711"/>
         </scene>
-        <!--123-->
+        <!--Market Table View Controller-->
         <scene sceneID="J6b-Kl-NmJ">
             <objects>
                 <tableViewController id="knm-hS-Adu" customClass="MarketTableViewController" customModule="CoinBackpack" customModuleProvider="target" sceneMemberID="viewController">
@@ -185,9 +185,14 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="sectionIndexColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <activityIndicatorView key="tableHeaderView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" id="Jx9-f9-7SX">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="20"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="color" systemColor="opaqueSeparatorColor"/>
+                        </activityIndicatorView>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="70" id="TbX-u2-m8Q" customClass="MarketTableViewCell" customModule="CoinBackpack" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44.5" width="414" height="70"/>
+                                <rect key="frame" x="0.0" y="64.5" width="414" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TbX-u2-m8Q" id="rCq-Td-onC">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
@@ -245,7 +250,8 @@
                             <outlet property="delegate" destination="knm-hS-Adu" id="B2f-61-6CS"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="123" largeTitleDisplayMode="always" id="dh9-6h-CaZ">
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="dh9-6h-CaZ">
+                        <nil key="title"/>
                         <barButtonItem key="backBarButtonItem" title="Back" id="ySn-DE-192"/>
                         <barButtonItem key="rightBarButtonItem" title="All coins" id="ADq-0W-lsw">
                             <connections>
@@ -254,12 +260,13 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="Jx9-f9-7SX" id="Sth-Hg-rgu"/>
                         <segue destination="IJw-v4-edh" kind="show" identifier="addCoin" id="JXn-Sj-xsl"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6no-H9-Dr4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8823" y="501"/>
+            <point key="canvasLocation" x="8821.7391304347839" y="500.89285714285711"/>
         </scene>
         <!--Datail View Controller-->
         <scene sceneID="8pf-46-jb4">
@@ -324,7 +331,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="percent" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="QKr-S0-zg4">
                                         <rect key="frame" x="0.0" y="0.0" width="119.5" height="26.5"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
-                                        <color key="textColor" systemColor="systemGreenColor"/>
+                                        <color key="textColor" systemColor="opaqueSeparatorColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00$" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="IhV-Lj-rPN">
@@ -336,7 +343,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="profit" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="5Hf-su-w7e">
                                         <rect key="frame" x="254.5" y="0.0" width="119.5" height="26.5"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
-                                        <color key="textColor" red="0.45009386540000001" green="0.98132258650000004" blue="0.4743030667" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="textColor" systemColor="opaqueSeparatorColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -394,7 +401,7 @@
                     <navigationItem key="navigationItem" id="jrI-jz-ILU">
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="A2H-G0-gqQ">
                             <connections>
-                                <action selector="saveResult:" destination="IJw-v4-edh" id="f7P-PM-1eN"/>
+                                <action selector="saveResults:" destination="IJw-v4-edh" id="JrE-fx-7Zx"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -459,8 +466,8 @@
     </scenes>
     <resources>
         <image name="homekit" catalog="system" width="128" height="106"/>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="opaqueSeparatorColor">
+            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

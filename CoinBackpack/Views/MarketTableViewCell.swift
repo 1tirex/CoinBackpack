@@ -22,7 +22,7 @@ final class MarketTableViewCell: UITableViewCell {
     
     func configure(with course: MarketsInfo?) {
         self.symbolLabel.text = course?.symbol
-        self.priceLabel.text = "\(course?.price ?? 0)$"
+        self.priceLabel.text = "\(String(format: "%.6f", course?.price ?? 0))$"
         self.exchengeLabel.text = course?.exchange
         self.symbolImage.image = UIImage(named: course?.baseAsset.lowercased() ?? "")
     }

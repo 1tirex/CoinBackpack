@@ -16,13 +16,24 @@ final class MainPortfolioViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var walletLabel: UILabel!
     
-    private var addCoin: [MarketsInfo] = []
+//    private var markets: [MarketsInfo] = [] {
+//        didSet {
+//            markets = markets.sorted {$0.price < $1.price}
+//        }
+//    }
+    private var coinsInPortfolio: [MarketsInfo] = [] {
+        didSet {
+            coinsInPortfolio = coinsInPortfolio.sorted {$0.totalPrice ?? "" < $1.totalPrice ?? ""}
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 70
-        
         tableView.dataSource = self
+        
+//        coinsInPortfolio = StorageManager.shared.fetchCoins()
+        
         setupNavigationBar()
     }
     
@@ -37,7 +48,7 @@ final class MainPortfolioViewController: UIViewController {
     
     // MARK: - IBAction
     @IBAction func addCoinButtom() {
-        performSegue(withIdentifier: "showMarkets", sender: nil)
+            performSegue(withIdentifier: "showMarkets", sender: nil)
     }
 
     // MARK: - Private methods
@@ -78,10 +89,10 @@ final class MainPortfolioViewController: UIViewController {
             }
             
             (gainMoney.contains("-"))
-            ? (wallet -= total - money)
+            ? (wallet += total - money)
             : (wallet += total + money)
-            
-            self.walletLabel.text = "\(wallet)$"
+
+            self.walletLabel.text = "\(String(format: "%.3f", wallet))$"
         } else {
             self.walletLabel.text = "0.00$"
         }
@@ -90,25 +101,33 @@ final class MainPortfolioViewController: UIViewController {
 
 extension MainPortfolioViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        addCoin.count
+        coinsInPortfolio.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? MainTableViewCell else { return UITableViewCell()}
         
-        let coinOnMarket = addCoin[indexPath.row]
+        let coinOnMarket = coinsInPortfolio[indexPath.row]
         cell.configure(with: coinOnMarket)
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+//            StorageManager.shared.deleteContact(at: indexPath.row)
+            coinsInPortfolio.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
     }
 }
 
 extension MainPortfolioViewController: AddCoinViewControllerDelegate {
     
     func addCoinInPortfolio(with data: MarketsInfo) {
-        self.addCoin.append(data)
+        reloadWallet(with: data)
+        self.coinsInPortfolio.append(data)
         self.tableView.reloadData()
         
-        reloadWallet(with: data)
     }
 }

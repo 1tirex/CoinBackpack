@@ -10,6 +10,7 @@ import UIKit
 final class DatailViewController: UIViewController {
     
     // MARK: - IBOutlet
+//    @IBOutlet var saveResult: UIBarButtonItem!
     @IBOutlet var symbolImage: UIImageView!
     
     @IBOutlet var nameCoinLabel: UILabel!
@@ -29,8 +30,8 @@ final class DatailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureTF(with: amountTF, .white, "Amount")
-        configureTF(with: buyPriceTF, .white, "Buy Price")
+        configureTF(with: amountTF, .lightGray, "Amount")
+        configureTF(with: buyPriceTF, .lightGray, "Buy Price")
         
         setupLabels()
     }
@@ -43,7 +44,7 @@ final class DatailViewController: UIViewController {
     // MARK: - Navigation
     
     // MARK: - IBAction
-    @IBAction func saveResult(_ sender: UIBarButtonItem) {
+    @IBAction func saveResults(_ sender: UIBarButtonItem) {
         if amountTF.text == "" || buyPriceTF.text == "" {
             showAlert(stutus: .failed)
         } else {
@@ -73,6 +74,8 @@ final class DatailViewController: UIViewController {
                                        status: selectedCoins.status,
                                        created: selectedCoins.created,
                                        updated: selectedCoins.updated)
+            
+//            StorageManager.shared.save(coin: coinInfo)
             delegate?.addCoinInPortfolio(with: coinInfo)
             self.navigationController?.popToRootViewController(animated: true)
         }
@@ -80,45 +83,65 @@ final class DatailViewController: UIViewController {
     
     @IBAction func amountTFChanged(_ sender: UITextField) {
         if amountTF.text == "", buyPriceTF.text != "" {
-            self.totalLabel.text = "\(buyPriceTF.text ?? "")$"
-            profitСalculation(buy: buyPriceTF.text ?? "")
+            
+            guard let buyPrice = buyPriceTF.text else { return }
+            self.totalLabel.text = "\(buyPrice)$"
+            profitСalculation(buy: buyPrice)
+//            self.saveResult.isEnabled = false
+            
         } else if let _ = buyPriceTF.text?.isNumber,
-                    buyPriceTF.text != "",
-                    amountTF.text != "" {
+                  buyPriceTF.text != "",
+                  amountTF.text != "" {
             
             guard let buyPriceText = self.buyPriceTF.text,
+                  let amtText = sender.text,
                   let buyPrice = Double(buyPriceText),
-                  let amt = Double(sender.text ?? "")  else { return }
+                  let amt = Double(amtText)  else { return }
             
             self.totalLabel.text = "\(amt * buyPrice)$"
-            profitСalculation(amt: sender.text ?? "", buy: buyPriceText)
+            profitСalculation(amt: amtText, buy: buyPriceText)
+//            self.saveResult.isEnabled = !amtText.isEmpty
+            
         } else {
             self.totalLabel.text = "0.00$"
             profitСalculation()
+//            self.saveResult.isEnabled = false
         }
+        
     }
     
     @IBAction func buyPriceTFChanged(_ sender: UITextField) {
         if amountTF.text == "", buyPriceTF.text != "" {
-            self.totalLabel.text = "\(sender.text ?? "")$"
-            profitСalculation(buy: sender.text ?? "")
+            
+            guard let buyPrice = sender.text else { return }
+            self.totalLabel.text = "\(buyPrice)$"
+            profitСalculation(buy: buyPrice)
+//            self.saveResult.isEnabled = false
+            
         } else if let _ = amountTF.text?.isNumber,
-                    amountTF.text != "",
-                    buyPriceTF.text != "" {
+                  amountTF.text != "",
+                  buyPriceTF.text != "" {
+            
             guard let amountText = self.amountTF.text,
+                  let buyPriceText = sender.text,
                   let amount = Double(amountText),
-                  let buy = Double(sender.text ?? "")  else { return }
+                  let buy = Double(buyPriceText)  else { return }
             
             self.totalLabel.text = "\(buy * amount)$"
-            profitСalculation(amt: amountText, buy: sender.text ?? "")
+            profitСalculation(amt: amountText, buy: buyPriceText)
+//            self.saveResult.isEnabled = !buyPriceText.isEmpty
+            
         } else {
             self.totalLabel.text = "0.00$"
             profitСalculation()
+//            self.saveResult.isEnabled = false
         }
     }
     
     // MARK: - Private methods
-    private func configureTF(with TF: UITextField, _ color: UIColor, _ text: String) {
+    private func configureTF(with TF: UITextField,
+                             _ color: UIColor,
+                             _ text: String) {
         TF.delegate = self
         TF.attributedPlaceholder = NSAttributedString(
             string: text,
@@ -137,13 +160,6 @@ final class DatailViewController: UIViewController {
     }
     
     private func profitСalculation(amt amount: String = "", buy buyPrice: String = "") {
-//        if amount.isEmpty, buyPrice.isEmpty {
-//            self.percentLabel.text = ""
-//            self.profitLabel.text = ""
-//        } else if !amount.isEmpty, buyPrice.isEmpty {
-//            self.percentLabel.text = ""
-//            self.profitLabel.text = ""
-//        } else
         if amount.isEmpty, !buyPrice.isEmpty {
             guard let price = Float(buyPrice) else { return }
             let percentage = price / selectedCoins.price
@@ -206,11 +222,13 @@ final class DatailViewController: UIViewController {
     }
     
     private func filterContentForCoin(_ coin: String, _ loadNames: [AssetsName]) {
-        if loadNames.contains(where: { name in
+        if  loadNames.contains(where: { name in
             name.asset.uppercased() == coin.uppercased()}) {
+            
             let filtered = loadNames.filter { name in
                 name.asset.uppercased() == coin.uppercased()}
             self.nameCoinLabel.text = filtered.first?.name
+            
         } else {
             self.nameCoinLabel.text = coin
         }
@@ -219,17 +237,19 @@ final class DatailViewController: UIViewController {
 // MARK: - Extension
 extension DatailViewController {
     func fetchName(from coin: MarketsInfo?) {
-        NetworkManager.shared.fetch(type: Assets.self,
-                                    needFor: .nameCoin,
-                                    coin: coin?.baseAsset.uppercased()) { [weak self] result in
-            switch result {
-            case .success(let loadName):
-                self?.filterContentForCoin(coin?.baseAsset ?? "",
-                                           loadName.assets)
-            case .failure(let error):
-                print(error)
+        NetworkManager.shared.fetch(
+            type: Assets.self,
+            needFor: .nameCoin,
+            coin: coin?.baseAsset.uppercased()) { [weak self] result in
+                switch result {
+                case .success(let loadName):
+                    self?.filterContentForCoin(
+                        coin?.baseAsset ?? "",
+                        loadName.assets)
+                case .failure(let error):
+                    print(error)
+                }
             }
-        }
     }
 }
 
@@ -247,6 +267,6 @@ extension DatailViewController: UITextFieldDelegate {
 
 extension String  {
     var isNumber: Bool {
-        return !isEmpty && rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
+        !isEmpty && rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
     }
 }
