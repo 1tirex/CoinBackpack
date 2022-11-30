@@ -399,7 +399,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="jrI-jz-ILU">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="A2H-G0-gqQ">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="save" id="A2H-G0-gqQ">
                             <connections>
                                 <action selector="saveResults:" destination="IJw-v4-edh" id="JrE-fx-7Zx"/>
                             </connections>
@@ -413,6 +413,7 @@
                         <outlet property="percentLabel" destination="QKr-S0-zg4" id="WdS-8j-tel"/>
                         <outlet property="priceCoinLabel" destination="UNK-SZ-8DE" id="aZK-t2-W1q"/>
                         <outlet property="profitLabel" destination="5Hf-su-w7e" id="8OB-OH-hHu"/>
+                        <outlet property="saveResult" destination="A2H-G0-gqQ" id="OLR-kp-29e"/>
                         <outlet property="symbolCoinLabel" destination="Sbw-Od-FrG" id="aqc-l5-YjC"/>
                         <outlet property="symbolImage" destination="uoE-Gk-z9g" id="eb3-fF-hlr"/>
                         <outlet property="totalLabel" destination="IhV-Lj-rPN" id="Dag-l0-LSQ"/>

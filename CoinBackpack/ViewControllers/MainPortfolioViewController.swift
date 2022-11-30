@@ -32,7 +32,7 @@ final class MainPortfolioViewController: UIViewController {
         tableView.rowHeight = 70
         tableView.dataSource = self
         
-//        coinsInPortfolio = StorageManager.shared.fetchCoins()
+        coinsInPortfolio = StorageManager.shared.fetchCoins()
         
         setupNavigationBar()
     }
@@ -64,18 +64,15 @@ final class MainPortfolioViewController: UIViewController {
         self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
     }
     
-    func reloadWallet(with data: MarketsInfo) {
-        let numericCharSet = CharacterSet.init(charactersIn: "1234567890")
+    func reloadWallet() {
+//        let numericCharSet = CharacterSet.init(charactersIn: "1234567890")
         let newCharSet = CharacterSet.init(charactersIn: "-+$%")
-        guard let totalPrice = data.totalPrice,
-              let gainMoney = data.gainMoney,
-              let wallet = walletLabel.text
-        else {
-            return
-        }
+        walletLabel.text = "0.00$"
         
-        if let _ = totalPrice.rangeOfCharacter(from: numericCharSet),
-            let _ = gainMoney.rangeOfCharacter(from: numericCharSet) {
+        coinsInPortfolio.forEach { coin in
+            guard let totalPrice = coin.totalPrice,
+                  let gainMoney = coin.gainMoney,
+                  let wallet = walletLabel.text else { return }
             
             let totalText = totalPrice.components(separatedBy: newCharSet).joined()
             let moneyText = gainMoney.components(separatedBy: newCharSet).joined()
@@ -83,19 +80,41 @@ final class MainPortfolioViewController: UIViewController {
             
             guard var wallet = Float(walletText),
                   let total = Float(totalText),
-                  let money = Float(moneyText)
-            else {
-                return
-            }
+                  let money = Float(moneyText) else { return }
             
             (gainMoney.contains("-"))
             ? (wallet += total - money)
             : (wallet += total + money)
-
-            self.walletLabel.text = "\(String(format: "%.3f", wallet))$"
-        } else {
-            self.walletLabel.text = "0.00$"
+            
+            self.walletLabel.text = "\(String(format: "%.2f", wallet))$"
         }
+        
+//        let numericCharSet = CharacterSet.init(charactersIn: "1234567890")
+//        let newCharSet = CharacterSet.init(charactersIn: "-+$%")
+//
+//        guard let totalPrice = data.totalPrice,
+//              let gainMoney = data.gainMoney,
+//              let wallet = walletLabel.text else { return }
+//
+//        if let _ = totalPrice.rangeOfCharacter(from: numericCharSet),
+//            let _ = gainMoney.rangeOfCharacter(from: numericCharSet) {
+//
+//            let totalText = totalPrice.components(separatedBy: newCharSet).joined()
+//            let moneyText = gainMoney.components(separatedBy: newCharSet).joined()
+//            let walletText = wallet.components(separatedBy: newCharSet).joined()
+//
+//            guard var wallet = Float(walletText),
+//                  let total = Float(totalText),
+//                  let money = Float(moneyText) else { return }
+//
+//            (gainMoney.contains("-"))
+//            ? (wallet += total - money)
+//            : (wallet += total + money)
+//
+//            self.walletLabel.text = "\(String(format: "%.3f", wallet))$"
+//        } else {
+//            self.walletLabel.text = "0.00$"
+//        }
     }
 }
 
@@ -118,6 +137,7 @@ extension MainPortfolioViewController: UITableViewDataSource {
 //            StorageManager.shared.deleteContact(at: indexPath.row)
             coinsInPortfolio.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
+            reloadWallet()
         }
     }
 }
@@ -125,9 +145,9 @@ extension MainPortfolioViewController: UITableViewDataSource {
 extension MainPortfolioViewController: AddCoinViewControllerDelegate {
     
     func addCoinInPortfolio(with data: MarketsInfo) {
-        reloadWallet(with: data)
         self.coinsInPortfolio.append(data)
         self.tableView.reloadData()
         
+        reloadWallet()
     }
 }

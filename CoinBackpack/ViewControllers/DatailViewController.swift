@@ -10,7 +10,7 @@ import UIKit
 final class DatailViewController: UIViewController {
     
     // MARK: - IBOutlet
-//    @IBOutlet var saveResult: UIBarButtonItem!
+    @IBOutlet var saveResult: UIBarButtonItem!
     @IBOutlet var symbolImage: UIImageView!
     
     @IBOutlet var nameCoinLabel: UILabel!
@@ -87,7 +87,7 @@ final class DatailViewController: UIViewController {
             guard let buyPrice = buyPriceTF.text else { return }
             self.totalLabel.text = "\(buyPrice)$"
             profitСalculation(buy: buyPrice)
-//            self.saveResult.isEnabled = false
+            self.saveResult.isEnabled = false
             
         } else if let _ = buyPriceTF.text?.isNumber,
                   buyPriceTF.text != "",
@@ -95,17 +95,17 @@ final class DatailViewController: UIViewController {
             
             guard let buyPriceText = self.buyPriceTF.text,
                   let amtText = sender.text,
-                  let buyPrice = Double(buyPriceText),
-                  let amt = Double(amtText)  else { return }
+                  let buyPrice = Float(buyPriceText),
+                  let amt = Float(amtText)  else { return }
             
             self.totalLabel.text = "\(amt * buyPrice)$"
             profitСalculation(amt: amtText, buy: buyPriceText)
-//            self.saveResult.isEnabled = !amtText.isEmpty
+            self.saveResult.isEnabled = !amtText.isEmpty
             
         } else {
             self.totalLabel.text = "0.00$"
             profitСalculation()
-//            self.saveResult.isEnabled = false
+            self.saveResult.isEnabled = false
         }
         
     }
@@ -116,7 +116,7 @@ final class DatailViewController: UIViewController {
             guard let buyPrice = sender.text else { return }
             self.totalLabel.text = "\(buyPrice)$"
             profitСalculation(buy: buyPrice)
-//            self.saveResult.isEnabled = false
+            self.saveResult.isEnabled = false
             
         } else if let _ = amountTF.text?.isNumber,
                   amountTF.text != "",
@@ -124,17 +124,17 @@ final class DatailViewController: UIViewController {
             
             guard let amountText = self.amountTF.text,
                   let buyPriceText = sender.text,
-                  let amount = Double(amountText),
-                  let buy = Double(buyPriceText)  else { return }
+                  let amount = Float(amountText),
+                  let buy = Float(buyPriceText)  else { return }
             
             self.totalLabel.text = "\(buy * amount)$"
             profitСalculation(amt: amountText, buy: buyPriceText)
-//            self.saveResult.isEnabled = !buyPriceText.isEmpty
+            self.saveResult.isEnabled = !buyPriceText.isEmpty
             
         } else {
             self.totalLabel.text = "0.00$"
             profitСalculation()
-//            self.saveResult.isEnabled = false
+            self.saveResult.isEnabled = false
         }
     }
     
@@ -167,12 +167,12 @@ final class DatailViewController: UIViewController {
             let gainMoney = (selectedCoins.price - price)
             
             (percent.sign == .minus)
-            ? (self.percentLabel.text = "\(String(format: "%.2f", percent))%")
-            : (self.percentLabel.text = "+\(String(format: "%.2f", percent))%")
+            ? (self.percentLabel.text = "\(String(format: "%.5f", percent))%")
+            : (self.percentLabel.text = "+\(String(format: "%.5f", percent))%")
             
             (gainMoney.sign == .minus)
-            ? (self.profitLabel.text = "\(String(format: "%.2f", gainMoney))$")
-            : (self.profitLabel.text = "+\(String(format: "%.2f", gainMoney))$")
+            ? (self.profitLabel.text = "\(String(format: "%.5f", gainMoney))$")
+            : (self.profitLabel.text = "+\(String(format: "%.5f", gainMoney))$")
             
         } else if !amount.isEmpty, !buyPrice.isEmpty {
             guard let amt = Float(amount), let price = Float(buyPrice) else { return }
@@ -182,12 +182,12 @@ final class DatailViewController: UIViewController {
             let gainMoney = (selectedCoins.price - price) * amt
             
             (percent.sign == .minus)
-            ? (self.percentLabel.text = "\(String(format: "%.2f", percent))%")
-            : (self.percentLabel.text = "+\(String(format: "%.2f", percent))%")
+            ? (self.percentLabel.text = "\(String(format: "%.5f", percent))%")
+            : (self.percentLabel.text = "+\(String(format: "%.5f", percent))%")
             
             (gainMoney.sign == .minus)
-            ? (self.profitLabel.text = "\(String(format: "%.2f", gainMoney))$")
-            : (self.profitLabel.text = "+\(String(format: "%.2f", gainMoney))$")
+            ? (self.profitLabel.text = "\(String(format: "%.5f", gainMoney))$")
+            : (self.profitLabel.text = "+\(String(format: "%.5f", gainMoney))$")
         } else {
             self.percentLabel.text = ""
             self.profitLabel.text = ""
