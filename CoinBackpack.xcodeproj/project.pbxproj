@@ -15,6 +15,11 @@
 		512BAB36292A697E004F1D61 /* CoinMarkets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512BAB35292A697E004F1D61 /* CoinMarkets.swift */; };
 		512BAB38292A7865004F1D61 /* MarketTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512BAB37292A7865004F1D61 /* MarketTableViewController.swift */; };
 		51513A472937D0A800D78DD4 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51513A462937D0A800D78DD4 /* StorageManager.swift */; };
+		51513A4A29380FCF00D78DD4 /* SwiftyGif in Frameworks */ = {isa = PBXBuildFile; productRef = 51513A4929380FCF00D78DD4 /* SwiftyGif */; };
+		51513A4E29380FFD00D78DD4 /* LogoAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51513A4D29380FFD00D78DD4 /* LogoAnimationView.swift */; };
+		51513A502938C30300D78DD4 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51513A4F2938C30300D78DD4 /* StartViewController.swift */; };
+		51513A5A2938CFB300D78DD4 /* logo.gif in Resources */ = {isa = PBXBuildFile; fileRef = 51513A592938CFB300D78DD4 /* logo.gif */; };
+		51513A5E2939166B00D78DD4 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51513A5D2939166B00D78DD4 /* TabBarViewController.swift */; };
 		51C4041B29315EFF00FD0DE6 /* AlertController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C4041A29315EFF00FD0DE6 /* AlertController+.swift */; };
 		51D27DD4292BB35E00B8A7AD /* MainPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D27DD3292BB35E00B8A7AD /* MainPortfolioViewController.swift */; };
 		51D27DD7292BDE0C00B8A7AD /* MarketTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D27DD6292BDE0C00B8A7AD /* MarketTableViewCell.swift */; };
@@ -36,6 +41,10 @@
 		512BAB35292A697E004F1D61 /* CoinMarkets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinMarkets.swift; sourceTree = "<group>"; };
 		512BAB37292A7865004F1D61 /* MarketTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketTableViewController.swift; sourceTree = "<group>"; };
 		51513A462937D0A800D78DD4 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		51513A4D29380FFD00D78DD4 /* LogoAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoAnimationView.swift; sourceTree = "<group>"; };
+		51513A4F2938C30300D78DD4 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
+		51513A592938CFB300D78DD4 /* logo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = logo.gif; sourceTree = "<group>"; };
+		51513A5D2939166B00D78DD4 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		51C4041A29315EFF00FD0DE6 /* AlertController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertController+.swift"; sourceTree = "<group>"; };
 		51D27DD3292BB35E00B8A7AD /* MainPortfolioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPortfolioViewController.swift; sourceTree = "<group>"; };
 		51D27DD6292BDE0C00B8A7AD /* MarketTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketTableViewCell.swift; sourceTree = "<group>"; };
@@ -51,6 +60,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				51D72440292D3A9000863E7C /* Alamofire in Frameworks */,
+				51513A4A29380FCF00D78DD4 /* SwiftyGif in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +111,7 @@
 		512BAB30292A68D5004F1D61 /* Sourse */ = {
 			isa = PBXGroup;
 			children = (
+				51513A582938CF2800D78DD4 /* gif */,
 				512BAB24292A5024004F1D61 /* Assets.xcassets */,
 			);
 			path = Sourse;
@@ -118,6 +129,8 @@
 		512BAB32292A68FC004F1D61 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				51513A4F2938C30300D78DD4 /* StartViewController.swift */,
+				51513A5D2939166B00D78DD4 /* TabBarViewController.swift */,
 				51D27DD3292BB35E00B8A7AD /* MainPortfolioViewController.swift */,
 				512BAB37292A7865004F1D61 /* MarketTableViewController.swift */,
 				51DF7432292FD58000C30FE7 /* DatailViewController.swift */,
@@ -143,10 +156,19 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		51513A582938CF2800D78DD4 /* gif */ = {
+			isa = PBXGroup;
+			children = (
+				51513A592938CFB300D78DD4 /* logo.gif */,
+			);
+			path = gif;
+			sourceTree = "<group>";
+		};
 		51C4041929315EBC00FD0DE6 /* Extension+ */ = {
 			isa = PBXGroup;
 			children = (
 				51C4041A29315EFF00FD0DE6 /* AlertController+.swift */,
+				51513A4D29380FFD00D78DD4 /* LogoAnimationView.swift */,
 			);
 			path = "Extension+";
 			sourceTree = "<group>";
@@ -178,6 +200,7 @@
 			name = CoinBackpack;
 			packageProductDependencies = (
 				51D7243F292D3A9000863E7C /* Alamofire */,
+				51513A4929380FCF00D78DD4 /* SwiftyGif */,
 			);
 			productName = CoinBackpack;
 			productReference = 512BAB18292A5021004F1D61 /* CoinBackpack.app */;
@@ -209,6 +232,7 @@
 			mainGroup = 512BAB0F292A5021004F1D61;
 			packageReferences = (
 				51D7243E292D3A9000863E7C /* XCRemoteSwiftPackageReference "Alamofire" */,
+				51513A4829380FCF00D78DD4 /* XCRemoteSwiftPackageReference "SwiftyGif" */,
 			);
 			productRefGroup = 512BAB19292A5021004F1D61 /* Products */;
 			projectDirPath = "";
@@ -225,6 +249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				512BAB28292A5024004F1D61 /* LaunchScreen.storyboard in Resources */,
+				51513A5A2938CFB300D78DD4 /* logo.gif in Resources */,
 				512BAB25292A5024004F1D61 /* Assets.xcassets in Resources */,
 				512BAB23292A5021004F1D61 /* Main.storyboard in Resources */,
 			);
@@ -237,7 +262,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51513A5E2939166B00D78DD4 /* TabBarViewController.swift in Sources */,
 				51F78A9529327EA7006B85EF /* MainTableViewCell.swift in Sources */,
+				51513A502938C30300D78DD4 /* StartViewController.swift in Sources */,
 				512BAB38292A7865004F1D61 /* MarketTableViewController.swift in Sources */,
 				512BAB36292A697E004F1D61 /* CoinMarkets.swift in Sources */,
 				51513A472937D0A800D78DD4 /* StorageManager.swift in Sources */,
@@ -247,6 +274,7 @@
 				51D27DD4292BB35E00B8A7AD /* MainPortfolioViewController.swift in Sources */,
 				51DF7433292FD58000C30FE7 /* DatailViewController.swift in Sources */,
 				51D27DD7292BDE0C00B8A7AD /* MarketTableViewCell.swift in Sources */,
+				51513A4E29380FFD00D78DD4 /* LogoAnimationView.swift in Sources */,
 				51C4041B29315EFF00FD0DE6 /* AlertController+.swift in Sources */,
 				51D27DD9292BE04A00B8A7AD /* NetworkManager.swift in Sources */,
 			);
@@ -404,6 +432,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -433,6 +462,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -470,6 +500,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		51513A4829380FCF00D78DD4 /* XCRemoteSwiftPackageReference "SwiftyGif" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kirualex/SwiftyGif.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		51D7243E292D3A9000863E7C /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -481,6 +519,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		51513A4929380FCF00D78DD4 /* SwiftyGif */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 51513A4829380FCF00D78DD4 /* XCRemoteSwiftPackageReference "SwiftyGif" */;
+			productName = SwiftyGif;
+		};
 		51D7243F292D3A9000863E7C /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 51D7243E292D3A9000863E7C /* XCRemoteSwiftPackageReference "Alamofire" */;

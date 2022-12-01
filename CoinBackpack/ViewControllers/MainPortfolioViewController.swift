@@ -7,20 +7,15 @@
 
 import UIKit
 
-protocol AddCoinViewControllerDelegate {
-    func addCoinInPortfolio(with data: MarketsInfo)
-}
+//protocol AddCoinViewControllerDelegate {
+//    func addCoinInPortfolio(with data: MarketsInfo)
+//}
 
 final class MainPortfolioViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var walletLabel: UILabel!
     
-//    private var markets: [MarketsInfo] = [] {
-//        didSet {
-//            markets = markets.sorted {$0.price < $1.price}
-//        }
-//    }
     private var coinsInPortfolio: [MarketsInfo] = [] {
         didSet {
             coinsInPortfolio = coinsInPortfolio.sorted {$0.totalPrice ?? "" < $1.totalPrice ?? ""}
@@ -32,9 +27,14 @@ final class MainPortfolioViewController: UIViewController {
         tableView.rowHeight = 70
         tableView.dataSource = self
         
-        coinsInPortfolio = StorageManager.shared.fetchCoins()
-        
         setupNavigationBar()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        coinsInPortfolio = StorageManager.shared.fetchCoins()
+        self.tableView.reloadData()
+        reloadWallet()
     }
     
     // MARK: - Navigation
@@ -42,7 +42,7 @@ final class MainPortfolioViewController: UIViewController {
         if segue.identifier == "showMarkets" {
             guard let marketVC = segue.destination as? MarketTableViewController else { return }
             marketVC.fetchMarkets()
-            marketVC.delegate = self
+//            marketVC.delegate = self
         }
     }
     
@@ -65,7 +65,6 @@ final class MainPortfolioViewController: UIViewController {
     }
     
     func reloadWallet() {
-//        let numericCharSet = CharacterSet.init(charactersIn: "1234567890")
         let newCharSet = CharacterSet.init(charactersIn: "-+$%")
         walletLabel.text = "0.00$"
         
@@ -88,33 +87,6 @@ final class MainPortfolioViewController: UIViewController {
             
             self.walletLabel.text = "\(String(format: "%.2f", wallet))$"
         }
-        
-//        let numericCharSet = CharacterSet.init(charactersIn: "1234567890")
-//        let newCharSet = CharacterSet.init(charactersIn: "-+$%")
-//
-//        guard let totalPrice = data.totalPrice,
-//              let gainMoney = data.gainMoney,
-//              let wallet = walletLabel.text else { return }
-//
-//        if let _ = totalPrice.rangeOfCharacter(from: numericCharSet),
-//            let _ = gainMoney.rangeOfCharacter(from: numericCharSet) {
-//
-//            let totalText = totalPrice.components(separatedBy: newCharSet).joined()
-//            let moneyText = gainMoney.components(separatedBy: newCharSet).joined()
-//            let walletText = wallet.components(separatedBy: newCharSet).joined()
-//
-//            guard var wallet = Float(walletText),
-//                  let total = Float(totalText),
-//                  let money = Float(moneyText) else { return }
-//
-//            (gainMoney.contains("-"))
-//            ? (wallet += total - money)
-//            : (wallet += total + money)
-//
-//            self.walletLabel.text = "\(String(format: "%.3f", wallet))$"
-//        } else {
-//            self.walletLabel.text = "0.00$"
-//        }
     }
 }
 
@@ -134,7 +106,7 @@ extension MainPortfolioViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-//            StorageManager.shared.deleteContact(at: indexPath.row)
+            StorageManager.shared.deleteCoin(at: indexPath.row)
             coinsInPortfolio.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
             reloadWallet()
@@ -142,12 +114,12 @@ extension MainPortfolioViewController: UITableViewDataSource {
     }
 }
 
-extension MainPortfolioViewController: AddCoinViewControllerDelegate {
-    
-    func addCoinInPortfolio(with data: MarketsInfo) {
-        self.coinsInPortfolio.append(data)
-        self.tableView.reloadData()
-        
-        reloadWallet()
-    }
-}
+//extension MainPortfolioViewController: AddCoinViewControllerDelegate {
+//
+//    func addCoinInPortfolio(with data: MarketsInfo) {
+//        self.coinsInPortfolio.append(data)
+//        self.tableView.reloadData()
+//
+//        reloadWallet()
+//    }
+//}

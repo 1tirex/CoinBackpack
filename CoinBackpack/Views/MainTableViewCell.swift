@@ -25,26 +25,36 @@ final class MainTableViewCell: UITableViewCell {
         }
     }
     
-    func configure(with course: MarketsInfo?) {
-        self.nameLabel.text = course?.name
-        self.totalLabel.text = course?.totalPrice
-        self.symbolLabel.text = course?.symbol
-        self.priceLabel.text = "\(course?.price ?? 0)$"
-        self.exchengeLabel.text = course?.exchange
-        self.profitLabel.text = course?.percent
-        self.gainLabel.text = course?.gainMoney
-        self.symbolImage.image = UIImage(named: course?.baseAsset.lowercased() ?? "")
+    func configure(with coin: MarketsInfo?) {
+        self.nameLabel.text = coin?.name
+        self.priceLabel.text = "\(String(format: "%.3f", coin?.price ?? 0))$"
+        self.symbolLabel.text = coin?.symbol
+        self.exchengeLabel.text = coin?.exchange
+        self.totalLabel.text = "\(String(format: "%.2f", convertToNumber(coin?.totalPrice)))$"
+        self.profitLabel.text = "\(String(format: "%.2f", convertToNumber(coin?.percent)))%"
+        self.gainLabel.text = "\(String(format: "%.2f", convertToNumber(coin?.gainMoney)))$"
+        self.symbolImage.image = UIImage(named: coin?.baseAsset.lowercased() ?? "")
         
-        profitСolorСhanges()
+        profitСolorСhanges(with: coin)
     }
     
-    private func profitСolorСhanges() {
-        guard let percent = self.profitLabel.text,
-                let gainMoney = self.gainLabel.text else { return }
+    private func convertToNumber(_ text: String?) -> Float {
+        let newCharSet = CharacterSet.init(charactersIn: "-+$%")
+                    
+        guard let numberText = text?.components(separatedBy: newCharSet).joined(),
+                let number = Float(numberText) else { return 0}
+        
+        return number
+    }
+    
+    private func profitСolorСhanges(with coin: MarketsInfo?) {
+        guard let percent = coin?.percent,
+                let gainMoney = coin?.gainMoney else { return }
 
         if percent.contains("-"), gainMoney.contains("-") {
             self.profitLabel.textColor = .systemPink
             self.gainLabel.textColor = .systemPink
+            
         } else if percent.contains("+"), gainMoney.contains("+") {
             let rgba = UIColor(red: 115/255, green: 250/255, blue: 121/255, alpha: 1.0)
             self.profitLabel.textColor = rgba

@@ -26,7 +26,7 @@ final class DatailViewController: UIViewController {
     
     // MARK: - Properties
     var selectedCoins: MarketsInfo!
-    var delegate: AddCoinViewControllerDelegate?
+//    var delegate: AddCoinViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,9 +75,10 @@ final class DatailViewController: UIViewController {
                                        created: selectedCoins.created,
                                        updated: selectedCoins.updated)
             
-//            StorageManager.shared.save(coin: coinInfo)
-            delegate?.addCoinInPortfolio(with: coinInfo)
-            self.navigationController?.popToRootViewController(animated: true)
+            StorageManager.shared.save(coin: coinInfo)
+            tabBarController?.selectedIndex = 0
+//            delegate?.addCoinInPortfolio(with: coinInfo)
+            self.navigationController?.popToRootViewController(animated: false)
         }
     }
     

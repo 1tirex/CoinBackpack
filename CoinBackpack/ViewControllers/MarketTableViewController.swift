@@ -12,7 +12,7 @@ final class MarketTableViewController: UITableViewController {
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
     //MARK: Private properties
-
+    
     private var filteredMarket: [MarketsInfo] = []
     
     private let searchController = UISearchController(searchResultsController: nil)
@@ -25,24 +25,30 @@ final class MarketTableViewController: UITableViewController {
     }
     
     var markets: [MarketsInfo] = []
-    var delegate: AddCoinViewControllerDelegate?
+    //    var delegate: AddCoinViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 70
         tableView.backgroundColor = .black
-        self.activityIndicator.stopAnimating()
-        activityIndicator.startAnimating()
-        activityIndicator.hidesWhenStopped = true
         
         setupSearchController()
         setupNavigationBar()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
+        fetchMarkets()
+    }
+    
+    
+    
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.activityIndicator.isAnimating {
-           return 0
+            return 0
         } else {
             return isFiltering ? filteredMarket.count : markets.count
         }
@@ -63,22 +69,22 @@ final class MarketTableViewController: UITableViewController {
         
         return cell
     }
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            tableView.deselectRow(at: indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
         let selectCoin = isFiltering
         ? filteredMarket[indexPath.row]
         : markets[indexPath.row]
         performSegue(withIdentifier: "addCoin", sender: selectCoin)
     }
     
-     // MARK: - Navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-         guard let datailVC = segue.destination as? DatailViewController else { return }
-         datailVC.fetchName(from: sender as? MarketsInfo)
-         datailVC.selectedCoins = sender as? MarketsInfo
-         datailVC.delegate = delegate
-     }
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let datailVC = segue.destination as? DatailViewController else { return }
+        datailVC.fetchName(from: sender as? MarketsInfo)
+        datailVC.selectedCoins = sender as? MarketsInfo
+        //         datailVC.delegate = delegate
+    }
     
     // MARK: - IBAction
     @IBAction func allCoins(_ sender: UIBarButtonItem) {
@@ -157,7 +163,7 @@ final class MarketTableViewController: UITableViewController {
     }
 }
 
-    // MARK: - Extension
+// MARK: - Extension
 extension MarketTableViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         activityIndicator.startAnimating()
@@ -165,16 +171,17 @@ extension MarketTableViewController: UISearchResultsUpdating {
     }
     
     func fetchMarkets() {
-        NetworkManager.shared.fetch(type: CoinMarkets.self,
-                                    needFor: .markets) { [weak self] result in
-            switch result {
-            case .success(let loadMarkets):
-                self?.markets = loadMarkets.markets
-                self?.activityIndicator.stopAnimating()
-                self?.tableView.reloadData()
-            case .failure(let error):
-                print(error)
+        NetworkManager.shared.fetch(
+            type: CoinMarkets.self,
+            needFor: .markets) { [weak self] result in
+                switch result {
+                case .success(let loadMarkets):
+                    self?.markets = loadMarkets.markets
+                    self?.activityIndicator.stopAnimating()
+                    self?.tableView.reloadData()
+                case .failure(let error):
+                    print(error)
+                }
             }
-        }
     }
 }

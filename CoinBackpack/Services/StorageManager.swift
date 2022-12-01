@@ -31,7 +31,7 @@ class StorageManager {
         return coins
     }
     
-    func deleteContact(at index: Int) {
+    func deleteCoin(at index: Int) {
         var coins = fetchCoins()
         coins.remove(at: index)
         guard let data = try? JSONEncoder().encode(coins) else { return }
