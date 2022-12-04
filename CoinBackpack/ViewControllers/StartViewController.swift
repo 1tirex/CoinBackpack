@@ -8,7 +8,7 @@
 import UIKit
 import SwiftyGif
 
-class StartViewController: UIViewController {
+final class StartViewController: UIViewController {
     
     private let logoAnimationView = LogoAnimationView()
     
@@ -17,20 +17,12 @@ class StartViewController: UIViewController {
         view.addSubview(logoAnimationView)
         self.logoAnimationView.pinEdgesToSuperView()
         self.logoAnimationView.logoGifImageView.delegate = self
-        
-
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.logoAnimationView.logoGifImageView.startAnimatingGif()
     }
-    
-
-    
-    // MARK: - Navigation
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//    }
 }
 
 extension StartViewController: SwiftyGifDelegate {
