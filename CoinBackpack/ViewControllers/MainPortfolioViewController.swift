@@ -7,10 +7,6 @@
 
 import UIKit
 
-//protocol AddCoinViewControllerDelegate {
-//    func addCoinInPortfolio(with data: MarketsInfo)
-//}
-
 final class MainPortfolioViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
@@ -40,17 +36,21 @@ final class MainPortfolioViewController: UIViewController {
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showMarkets" {
-            guard let marketVC = segue.destination as? MarketTableViewController else { return }
+            guard let marketVC = segue.destination as? SearchTableViewController else { return }
             marketVC.fetchMarkets()
-//            marketVC.delegate = self
         }
     }
     
     // MARK: - IBAction
-    @IBAction func addCoinButtom() {
-            performSegue(withIdentifier: "showMarkets", sender: nil)
+    @IBAction func unwindToViewControllerPortfolio(segue: UIStoryboardSegue) {
+        self.tableView.reloadData()
+        reloadWallet()
     }
-
+    
+    @IBAction func addCoinButtom() {
+        performSegue(withIdentifier: "showMarkets", sender: nil)
+    }
+    
     // MARK: - Private methods
     private func setupNavigationBar() {
         self.navigationItem.title = "Coin BackPack 🎒"
@@ -113,13 +113,3 @@ extension MainPortfolioViewController: UITableViewDataSource {
         }
     }
 }
-
-//extension MainPortfolioViewController: AddCoinViewControllerDelegate {
-//
-//    func addCoinInPortfolio(with data: MarketsInfo) {
-//        self.coinsInPortfolio.append(data)
-//        self.tableView.reloadData()
-//
-//        reloadWallet()
-//    }
-//}

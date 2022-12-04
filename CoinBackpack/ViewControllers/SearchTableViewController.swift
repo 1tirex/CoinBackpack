@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MarketTableViewController: UITableViewController {
+final class SearchTableViewController: UITableViewController {
     
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
@@ -25,7 +25,6 @@ final class MarketTableViewController: UITableViewController {
     }
     
     var markets: [MarketsInfo] = []
-    //    var delegate: AddCoinViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,7 +82,6 @@ final class MarketTableViewController: UITableViewController {
         guard let datailVC = segue.destination as? DatailViewController else { return }
         datailVC.fetchName(from: sender as? MarketsInfo)
         datailVC.selectedCoins = sender as? MarketsInfo
-        //         datailVC.delegate = delegate
     }
     
     // MARK: - IBAction
@@ -143,6 +141,7 @@ final class MarketTableViewController: UITableViewController {
         self.searchController.searchBar.barTintColor = .white
         self.navigationItem.searchController = searchController
         self.definesPresentationContext = true
+        self.navigationItem.hidesSearchBarWhenScrolling = false
         
         if let textField = searchController.searchBar.value(forKey: "searchField") as? UITextField {
             textField.font = UIFont.boldSystemFont(ofSize: 17)
@@ -164,7 +163,7 @@ final class MarketTableViewController: UITableViewController {
 }
 
 // MARK: - Extension
-extension MarketTableViewController: UISearchResultsUpdating {
+extension SearchTableViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         activityIndicator.startAnimating()
         fetchSearch(from: searchController.searchBar.text ?? "")

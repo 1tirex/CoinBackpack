@@ -26,10 +26,10 @@ final class DatailViewController: UIViewController {
     
     // MARK: - Properties
     var selectedCoins: MarketsInfo!
-//    var delegate: AddCoinViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        amountTF.becomeFirstResponder()
         configureTF(with: amountTF, .lightGray, "Amount")
         configureTF(with: buyPriceTF, .lightGray, "Buy Price")
         
@@ -54,7 +54,7 @@ final class DatailViewController: UIViewController {
                   let buyPrice = self.buyPriceTF.text,
                   let percent = self.percentLabel.text,
                   let gainMoney = self.profitLabel.text else { return }
-            
+
             let coinInfo = MarketsInfo(name: nameCoin,
                                        totalPrice: total,
                                        amountCoins: amount,
@@ -74,11 +74,12 @@ final class DatailViewController: UIViewController {
                                        status: selectedCoins.status,
                                        created: selectedCoins.created,
                                        updated: selectedCoins.updated)
-            
+
             StorageManager.shared.save(coin: coinInfo)
-            tabBarController?.selectedIndex = 0
+//            tabBarController?.selectedIndex = 0
 //            delegate?.addCoinInPortfolio(with: coinInfo)
-            self.navigationController?.popToRootViewController(animated: false)
+            performSegue(withIdentifier: "unwindToPortfolio", sender: self)
+            navigationController?.popToRootViewController(animated: false)
         }
     }
     
@@ -154,7 +155,7 @@ final class DatailViewController: UIViewController {
         self.symbolImage.image = UIImage(named: selectedCoins.baseAsset.lowercased())
         self.symbolCoinLabel.text = selectedCoins.symbol
         self.exchangeCoinLabel.text  = selectedCoins.exchange
-        self.priceCoinLabel.text = "\(selectedCoins.price)$"
+        self.priceCoinLabel.text = "\(String(format: "%.6f", selectedCoins.price))$"
         self.nameCoinLabel.text = selectedCoins.baseAsset
         self.percentLabel.text = ""
         self.profitLabel.text = ""
@@ -168,12 +169,12 @@ final class DatailViewController: UIViewController {
             let gainMoney = (selectedCoins.price - price)
             
             (percent.sign == .minus)
-            ? (self.percentLabel.text = "\(String(format: "%.5f", percent))%")
-            : (self.percentLabel.text = "+\(String(format: "%.5f", percent))%")
+            ? (self.percentLabel.text = "\(String(format: "%.2f", percent))%")
+            : (self.percentLabel.text = "+\(String(format: "%.2f", percent))%")
             
             (gainMoney.sign == .minus)
-            ? (self.profitLabel.text = "\(String(format: "%.5f", gainMoney))$")
-            : (self.profitLabel.text = "+\(String(format: "%.5f", gainMoney))$")
+            ? (self.profitLabel.text = "\(String(format: "%.2f", gainMoney))$")
+            : (self.profitLabel.text = "+\(String(format: "%.2f", gainMoney))$")
             
         } else if !amount.isEmpty, !buyPrice.isEmpty {
             guard let amt = Float(amount), let price = Float(buyPrice) else { return }
@@ -183,12 +184,12 @@ final class DatailViewController: UIViewController {
             let gainMoney = (selectedCoins.price - price) * amt
             
             (percent.sign == .minus)
-            ? (self.percentLabel.text = "\(String(format: "%.5f", percent))%")
-            : (self.percentLabel.text = "+\(String(format: "%.5f", percent))%")
+            ? (self.percentLabel.text = "\(String(format: "%.2f", percent))%")
+            : (self.percentLabel.text = "+\(String(format: "%.2f", percent))%")
             
             (gainMoney.sign == .minus)
-            ? (self.profitLabel.text = "\(String(format: "%.5f", gainMoney))$")
-            : (self.profitLabel.text = "+\(String(format: "%.5f", gainMoney))$")
+            ? (self.profitLabel.text = "\(String(format: "%.2f", gainMoney))$")
+            : (self.profitLabel.text = "+\(String(format: "%.2f", gainMoney))$")
         } else {
             self.percentLabel.text = ""
             self.profitLabel.text = ""

@@ -13,7 +13,7 @@
 		512BAB25292A5024004F1D61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 512BAB24292A5024004F1D61 /* Assets.xcassets */; };
 		512BAB28292A5024004F1D61 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 512BAB26292A5024004F1D61 /* LaunchScreen.storyboard */; };
 		512BAB36292A697E004F1D61 /* CoinMarkets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512BAB35292A697E004F1D61 /* CoinMarkets.swift */; };
-		512BAB38292A7865004F1D61 /* MarketTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512BAB37292A7865004F1D61 /* MarketTableViewController.swift */; };
+		512BAB38292A7865004F1D61 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512BAB37292A7865004F1D61 /* SearchTableViewController.swift */; };
 		51513A472937D0A800D78DD4 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51513A462937D0A800D78DD4 /* StorageManager.swift */; };
 		51513A4A29380FCF00D78DD4 /* SwiftyGif in Frameworks */ = {isa = PBXBuildFile; productRef = 51513A4929380FCF00D78DD4 /* SwiftyGif */; };
 		51513A4E29380FFD00D78DD4 /* LogoAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51513A4D29380FFD00D78DD4 /* LogoAnimationView.swift */; };
@@ -39,7 +39,7 @@
 		512BAB27292A5024004F1D61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		512BAB29292A5024004F1D61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		512BAB35292A697E004F1D61 /* CoinMarkets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinMarkets.swift; sourceTree = "<group>"; };
-		512BAB37292A7865004F1D61 /* MarketTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketTableViewController.swift; sourceTree = "<group>"; };
+		512BAB37292A7865004F1D61 /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		51513A462937D0A800D78DD4 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		51513A4D29380FFD00D78DD4 /* LogoAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoAnimationView.swift; sourceTree = "<group>"; };
 		51513A4F2938C30300D78DD4 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
@@ -132,7 +132,7 @@
 				51513A4F2938C30300D78DD4 /* StartViewController.swift */,
 				51513A5D2939166B00D78DD4 /* TabBarViewController.swift */,
 				51D27DD3292BB35E00B8A7AD /* MainPortfolioViewController.swift */,
-				512BAB37292A7865004F1D61 /* MarketTableViewController.swift */,
+				512BAB37292A7865004F1D61 /* SearchTableViewController.swift */,
 				51DF7432292FD58000C30FE7 /* DatailViewController.swift */,
 			);
 			path = ViewControllers;
@@ -265,7 +265,7 @@
 				51513A5E2939166B00D78DD4 /* TabBarViewController.swift in Sources */,
 				51F78A9529327EA7006B85EF /* MainTableViewCell.swift in Sources */,
 				51513A502938C30300D78DD4 /* StartViewController.swift in Sources */,
-				512BAB38292A7865004F1D61 /* MarketTableViewController.swift in Sources */,
+				512BAB38292A7865004F1D61 /* SearchTableViewController.swift in Sources */,
 				512BAB36292A697E004F1D61 /* CoinMarkets.swift in Sources */,
 				51513A472937D0A800D78DD4 /* StorageManager.swift in Sources */,
 				51D72442292D5AC800863E7C /* CreateLinkForMarkets.swift in Sources */,
