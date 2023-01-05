@@ -17,7 +17,7 @@ final class NetworkManager {
                              completion: @escaping(Result<T, AFError>) -> Void) {
         
         let link = CreateLink(needLinkFor: needFor, baseAsset: name ?? "")
-        
+
         AF.request(link.url)
             .validate()
             .responseDecodable(of: T.self) { dataResponse in

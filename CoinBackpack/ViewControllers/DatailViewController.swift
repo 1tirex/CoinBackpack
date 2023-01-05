@@ -25,7 +25,7 @@ final class DatailViewController: UIViewController {
     @IBOutlet weak var buyPriceTF: UITextField!
     
     // MARK: - Properties
-    var selectedCoins: MarketsInfo!
+    var selectedCoins: Market!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,31 +55,39 @@ final class DatailViewController: UIViewController {
                   let percent = self.percentLabel.text,
                   let gainMoney = self.profitLabel.text else { return }
 
-            let coinInfo = MarketsInfo(name: nameCoin,
-                                       totalPrice: total,
-                                       amountCoins: amount,
-                                       buyPriceCoin: buyPrice,
-                                       imageCoin: selectedCoins.baseAsset,
-                                       percent: percent,
-                                       gainMoney: gainMoney,
-                                       exchange: selectedCoins.exchange,
-                                       symbol: selectedCoins.symbol,
-                                       baseAsset: selectedCoins.baseAsset,
-                                       quoteAsset: selectedCoins.quoteAsset,
-                                       priceUnconverted: selectedCoins.priceUnconverted,
-                                       price: selectedCoins.price,
-                                       change24Hour: selectedCoins.change24Hour,
-                                       spread: selectedCoins.spread,
-                                       volume24Hour: selectedCoins.volume24Hour,
-                                       status: selectedCoins.status,
-                                       created: selectedCoins.created,
-                                       updated: selectedCoins.updated)
+            let coinInfo = Coin(name: nameCoin,
+                                symbol: selectedCoins.symbol,
+                                baseAsset: selectedCoins.baseAsset,
+                                quoteAsset: selectedCoins.quoteAsset,
+                                imageCoin: selectedCoins.baseAsset,
+                                exchange: selectedCoins.exchange,
+                                price: selectedCoins.price,
+                                amountCoins: Float(amount) ?? 0,
+                                buyPriceCoin: Float(buyPrice) ?? 0)
+//            Market(name: nameCoin,
+//                                       totalPrice: total,
+//                                       amountCoins: amount,
+//                                       buyPriceCoin: buyPrice,
+//                                       imageCoin: selectedCoins.baseAsset,
+//                                       percent: percent,
+//                                       gainMoney: gainMoney,
+//                                       exchange: selectedCoins.exchange,
+//                                       symbol: selectedCoins.symbol,
+//                                       baseAsset: selectedCoins.baseAsset,
+//                                       quoteAsset: selectedCoins.quoteAsset,
+//                                    status: selectedCoins.status, priceUnconverted: selectedCoins.priceUnconverted,
+//                                    price: selectedCoins.price,
+//                                    change24Hour: selectedCoins.change24Hour,
+//                                    spread: selectedCoins.spread,
+//                                    volume24Hour: selectedCoins.volume24Hour,
+//                                       created: selectedCoins.created,
+//                                       updated: selectedCoins.updated)
 
             StorageManager.shared.save(coin: coinInfo)
-//            tabBarController?.selectedIndex = 0
+            tabBarController?.selectedIndex = 0
 //            delegate?.addCoinInPortfolio(with: coinInfo)
-            performSegue(withIdentifier: "unwindToPortfolio", sender: self)
-            navigationController?.popToRootViewController(animated: false)
+//            performSegue(withIdentifier: "unwindToPortfolio", sender: self)
+//            navigationController?.popToRootViewController(animated: false)
         }
     }
     
@@ -223,12 +231,12 @@ final class DatailViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    private func filterContentForCoin(_ coin: String, _ loadNames: [AssetsName]) {
+    private func filterContentForCoin(_ coin: String, _ loadNames: [AssetsCoin]) {
         if  loadNames.contains(where: { name in
-            name.asset.uppercased() == coin.uppercased()}) {
+            name.name.uppercased() == coin.uppercased()}) {
             
             let filtered = loadNames.filter { name in
-                name.asset.uppercased() == coin.uppercased()}
+                name.name.uppercased() == coin.uppercased()}
             self.nameCoinLabel.text = filtered.first?.name
             
         } else {
@@ -238,16 +246,16 @@ final class DatailViewController: UIViewController {
 }
 // MARK: - Extension
 extension DatailViewController {
-    func fetchName(from coin: MarketsInfo?) {
+    func fetchName(from coin: Market?) {
         NetworkManager.shared.fetch(
             type: Assets.self,
-            needFor: .nameCoin,
+            needFor: .coinSearch,
             coin: coin?.baseAsset.uppercased()) { [weak self] result in
                 switch result {
                 case .success(let loadName):
                     self?.filterContentForCoin(
                         coin?.baseAsset ?? "",
-                        loadName.assets)
+                        loadName.assets ?? []) // incorrect
                 case .failure(let error):
                     print(error)
                 }

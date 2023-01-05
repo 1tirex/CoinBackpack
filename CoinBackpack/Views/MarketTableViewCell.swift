@@ -20,7 +20,7 @@ final class MarketTableViewCell: UITableViewCell {
         }
     }
     
-    func configure(with coin: MarketsInfo?) {
+    func configure(with coin: Market?) {
         self.symbolLabel.text = coin?.symbol
         self.priceLabel.text = "\(String(format: "%.6f", coin?.price ?? 0))$"
         self.exchengeLabel.text = coin?.exchange

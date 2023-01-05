@@ -13,7 +13,7 @@ final class SearchTableViewController: UITableViewController {
     
     //MARK: Private properties
     
-    private var filteredMarket: [MarketsInfo] = []
+    private var filteredMarket: [Market] = []
     
     private let searchController = UISearchController(searchResultsController: nil)
     private var searchBarIsEmpty: Bool {
@@ -24,7 +24,7 @@ final class SearchTableViewController: UITableViewController {
         return searchController.isActive && !searchBarIsEmpty
     }
     
-    var markets: [MarketsInfo] = []
+    var markets: [Market] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,8 +80,8 @@ final class SearchTableViewController: UITableViewController {
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let datailVC = segue.destination as? DatailViewController else { return }
-        datailVC.fetchName(from: sender as? MarketsInfo)
-        datailVC.selectedCoins = sender as? MarketsInfo
+        datailVC.fetchName(from: sender as? Market)
+        datailVC.selectedCoins = sender as? Market
     }
     
     // MARK: - IBAction
@@ -94,7 +94,7 @@ final class SearchTableViewController: UITableViewController {
     // MARK: - Private methods
     private func fetchData(for type: CreateLink.TypeLink) {
         NetworkManager.shared.fetch(
-            type: CoinMarkets.self,
+            type: CoinsMarkets.self,
             needFor: type) { [weak self] result in
                 switch result {
                 case .success(let loadMarket):
@@ -110,7 +110,7 @@ final class SearchTableViewController: UITableViewController {
     private func fetchSearch(from coin: String) {
         if !coin.isEmpty {
             NetworkManager.shared.fetch(
-                type: CoinMarkets.self,
+                type: CoinsMarkets.self,
                 needFor: .coinSearch,
                 coin: coin.lowercased()) { [weak self] result in
                     switch result {
@@ -127,7 +127,7 @@ final class SearchTableViewController: UITableViewController {
         }
     }
     
-    private func filterContentForSearchText(_ searchText: String, _ loadMarket: [MarketsInfo]) {
+    private func filterContentForSearchText(_ searchText: String, _ loadMarket: [Market]) {
         filteredMarket = loadMarket.filter { market in
             market.baseAsset.uppercased() == searchText.uppercased()
         }
@@ -171,7 +171,7 @@ extension SearchTableViewController: UISearchResultsUpdating {
     
     func fetchMarkets() {
         NetworkManager.shared.fetch(
-            type: CoinMarkets.self,
+            type: CoinsMarkets.self,
             needFor: .markets) { [weak self] result in
                 switch result {
                 case .success(let loadMarkets):

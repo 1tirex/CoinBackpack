@@ -15,19 +15,20 @@ final class StartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(logoAnimationView)
-        self.logoAnimationView.pinEdgesToSuperView()
-        self.logoAnimationView.logoGifImageView.delegate = self
+        logoAnimationView.pinEdgesToSuperView()
+        logoAnimationView.logoGifImageView.delegate = self
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.logoAnimationView.logoGifImageView.startAnimatingGif()
+        logoAnimationView.logoGifImageView.startAnimatingGif()
     }
 }
 
 extension StartViewController: SwiftyGifDelegate {
     func gifDidStop(sender: UIImageView) {
-        self.logoAnimationView.isHidden = true
+        logoAnimationView.isHidden = true
+
         performSegue(withIdentifier: "choiceScreen", sender: nil)
     }
 }

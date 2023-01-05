@@ -8,7 +8,7 @@
 import UIKit
 import SwiftyGif
 
-class LogoAnimationView: UIView {
+final class LogoAnimationView: UIView {
 
     let logoGifImageView: UIImageView = {
         var iv = UIImageView()
@@ -38,17 +38,5 @@ class LogoAnimationView: UIView {
             equalTo: centerYAnchor, constant: -100).isActive = true
         logoGifImageView.widthAnchor.constraint(equalToConstant: 200).isActive = true
         logoGifImageView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-    }
-}
-extension UIView {
-
-    func pinEdgesToSuperView() {
-        guard let superView = superview else { return }
-
-        translatesAutoresizingMaskIntoConstraints = false
-        topAnchor.constraint(equalTo: superView.topAnchor).isActive = true
-        leftAnchor.constraint(equalTo: superView.leftAnchor).isActive = true
-        bottomAnchor.constraint(equalTo: superView.bottomAnchor).isActive = true
-        rightAnchor.constraint(equalTo: superView.rightAnchor).isActive = true
     }
 }
