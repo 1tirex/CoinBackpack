@@ -12,7 +12,8 @@ protocol MainPortfolioViewModelProtocol {
     var numberOfRowsInSection: Int { get }
     
     func fetchCoins(completion: @escaping() -> Void)
-    func getCoin(_: IndexPath) -> Coin
+    func getCoin(_: IndexPath) -> MainCellViewModelProtocol
+    func deleteCoin(_: IndexPath, completion: @escaping () -> Void)
 }
 
 final class MainPortfolioViewModel: MainPortfolioViewModelProtocol {
@@ -26,18 +27,13 @@ final class MainPortfolioViewModel: MainPortfolioViewModelProtocol {
     private var coinsInPortfolio: [Coin] = [] {
         didSet {
             coinsInPortfolio = coinsInPortfolio.sorted {
-                $0.totalPrice < $1.totalPrice
+                $0.totalPrice > $1.totalPrice
             }
         }
     }
     
-    func fetchCoins(completion: @escaping () -> Void) {
-        coinsInPortfolio = StorageManager.shared.fetchCoins()
-        completion()
-    }
-    
     required init() {
-        wallet = Box("0.00$")
+        wallet = Box("Loading..")
         gameTimer = Timer.scheduledTimer(
             timeInterval: 10,
             target: self,
@@ -47,41 +43,32 @@ final class MainPortfolioViewModel: MainPortfolioViewModelProtocol {
     }
     
     @objc private func reloadWallet() {
-        wallet.value = "0.00$"
+//        let wal = coinsInPortfolio.map { $0.totalPrice + $0.profit }.reduce(0, +)
+        wallet.value = "\(String(format: "%.2f", coinsInPortfolio.map { $0.totalPrice + $0.profit }.reduce(0, +)))$"
         
         coinsInPortfolio.forEach { coin in
-            reloadCoin(from: coin.baseAsset)
+            fetchCoin(from: coin.baseAsset)
         }
-//        coinsInPortfolio.forEach { coin in
-//            reloadCoin(from: coin.baseAsset)
-//
-//            guard let totalPrice = coin.totalPrice,
-//                  let gainMoney = coin.gainMoney else { return }
-//
-//            let totalText = resetCharacter(for: totalPrice)
-//            let moneyText = resetCharacter(for: gainMoney)
-//
-//            guard let total = Float(totalText),
-//                  let money = Float(moneyText) else { return }
-//
-//            var wallet: Float = 0
-//
-//            wallet += (gainMoney.contains("-"))
-//            ? ( total - money )
-//            : ( total + money )
-//
-//            self.wallet.value = "\(String(format: "%.2f", wallet))$"
-//            print("\(String(format: "%.2f", wallet))$")
-//        }
     }
     
-    private func resetCharacter(for text: String) -> String {
-        let newCharSet = CharacterSet.init(charactersIn: "-+$%")
-        return text.components(separatedBy: newCharSet).joined()
+    func fetchCoins(completion: @escaping () -> Void) {
+        coinsInPortfolio = StorageManager.shared.fetchCoins()
+        completion()
+        reloadWallet()
     }
     
-    private func reloadCoin(from coin: String) {
-        print(coin)
+    func getCoin(_ index: IndexPath) -> MainCellViewModelProtocol {
+        MainCellViewModel(coin: coinsInPortfolio[index.row])
+    }
+    
+    func deleteCoin(_ index: IndexPath, completion: @escaping () -> Void) {
+        StorageManager.shared.deleteCoin(at: index.row)
+        coinsInPortfolio.remove(at: index.row)
+        reloadWallet()
+        completion()
+    }
+    
+    private func fetchCoin(from coin: String) {
         NetworkManager.shared.fetch(
             type: Assets.self,
             needFor: .coinSearch,
@@ -93,7 +80,6 @@ final class MainPortfolioViewModel: MainPortfolioViewModelProtocol {
                     print(error)
                 }
             }
-        
     }
     
     private func update(coin: AssetsCoin?) {
@@ -101,76 +87,6 @@ final class MainPortfolioViewModel: MainPortfolioViewModelProtocol {
         guard let index = index, let coin = coin else { return }
         
         coinsInPortfolio[index] = Coin(asset: coin, coin: coinsInPortfolio[index])
-        
         StorageManager.shared.update(coin: coinsInPortfolio[index])
     }
-    
-    func getCoin(_ index: IndexPath) -> Coin {
-        coinsInPortfolio[index.row]
-    }
-    
-    private func profitСalculation(amount count: Float = 0, buy buyPrice: Float = 0, price coinPrice: Float) -> (percent: Float, profit: Float) {
-        
-        var per: Float = 0
-        var money: Float = 0
-        
-        if count.isZero, !buyPrice.isZero {
-            
-            let percentage = buyPrice / coinPrice
-            let percent = (coinPrice - buyPrice) / percentage
-            let gainMoney = coinPrice - buyPrice
-            
-            per = percent
-            money = gainMoney
-            
-//            per = (percent.sign == .minus)
-//            ? (self.percentLabel.text = "\(String(format: "%.2f", percent))%")
-//            : (self.percentLabel.text = "+\(String(format: "%.2f", percent))%")
-//
-//            (gainMoney.sign == .minus)
-//            ? (self.profitLabel.text = "\(String(format: "%.2f", gainMoney))$")
-//            : (self.profitLabel.text = "+\(String(format: "%.2f", gainMoney))$")
-//
-        } else if !count.isZero, !buyPrice.isZero {
-            
-            let percentage = (count * buyPrice) / coinPrice
-            let percent = (count * coinPrice - count * buyPrice) / percentage
-            let gainMoney = (coinPrice - buyPrice) * count
-            
-            per = percent
-            money = gainMoney
-            
-//            (percent.sign == .minus)
-//            ? (self.percentLabel.text = "\(String(format: "%.2f", percent))%")
-//            : (self.percentLabel.text = "+\(String(format: "%.2f", percent))%")
-//
-//            (gainMoney.sign == .minus)
-//            ? (self.profitLabel.text = "\(String(format: "%.2f", gainMoney))$")
-//            : (self.profitLabel.text = "+\(String(format: "%.2f", gainMoney))$")
-        } else {
-            
-            per = 0
-            money = 0
-            
-//            self.percentLabel.text = ""
-//            self.profitLabel.text = ""
-        }
-//        profitСolorСhanges()
-        
-        return (per, money)
-    }
-    
-//    private func profitСolorСhanges() {
-//        guard let percent = self.percentLabel.text,
-//                let gainMoney = self.profitLabel.text else { return }
-//
-//        if percent.contains("-"), gainMoney.contains("-") {
-//            self.percentLabel.textColor = .systemPink
-//            self.profitLabel.textColor = .systemPink
-//        } else if percent.contains("+"), gainMoney.contains("+") {
-//            let rgba = UIColor(red: 115/255, green: 250/255, blue: 121/255, alpha: 1.0)
-//            self.percentLabel.textColor = rgba
-//            self.profitLabel.textColor = rgba
-//        }
-//    }
 }

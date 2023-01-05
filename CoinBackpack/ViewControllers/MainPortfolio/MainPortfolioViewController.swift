@@ -38,19 +38,9 @@ final class MainPortfolioViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-//        coinsInPortfolio = StorageManager.shared.fetchCoins()
         tableView.reloadData()
-//        reloadWallet()
     }
     
-    // MARK: - Navigation
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "showMarkets" {
-//            guard let marketVC = segue.destination as? SearchTableViewController else { return }
-//            marketVC.fetchMarkets()
-//        }
-//    }
     
     // MARK: - IBAction
 //    @IBAction func unwindToViewControllerPortfolio(segue: UIStoryboardSegue) {
@@ -60,7 +50,6 @@ final class MainPortfolioViewController: UIViewController {
     
     @IBAction func addCoinButtom() {
         tabBarController?.selectedIndex = 1
-//        performSegue(withIdentifier: "showMarkets", sender: nil)
     }
     
     // MARK: - Private methods
@@ -94,57 +83,33 @@ final class MainPortfolioViewController: UIViewController {
         tableView.dataSource = self
 //        tableView.delegate = self
     }
-    
-//    private func reloadWallet() {
-//        walletLabel.text = "0.00$"
-//        
-//        coinsInPortfolio.forEach { coin in
-//            guard let totalPrice = coin.totalPrice,
-//                  let gainMoney = coin.gainMoney else { return }
-//            
-//            let totalText = resetCharacter(for: totalPrice)
-//            let moneyText = resetCharacter(for: gainMoney)
-////            let walletText = resetCharacter(for: wallet)
-//            
-//            guard let total = Float(totalText),
-//                  let money = Float(moneyText) else { return }
-//            
-//            var wallet: Float = 0
-//                
-//            wallet += (gainMoney.contains("-"))
-//            ? ( total - money )
-//            : ( total + money )
-//            
-//            walletLabel.text = "\(String(format: "%.2f", wallet))$"
-//        }
-//    }
-    
-//    private func resetCharacter(for text: String) -> String {
-//        let newCharSet = CharacterSet.init(charactersIn: "-+$%")
-//        return text.components(separatedBy: newCharSet).joined()
-//    }
 }
 
 extension MainPortfolioViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.numberOfRowsInSection //coinsInPortfolio.count
+        viewModel.numberOfRowsInSection
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? MainTableViewCell else { return UITableViewCell()}
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: "cell",
+            for: indexPath) as? MainTableViewCell
+        else {
+            return UITableViewCell()
+        }
         
-        let coinOnMarket = viewModel.getCoin(indexPath) //coinsInPortfolio[indexPath.row]
-        cell.configure(with: coinOnMarket)
-        
+        cell.viewModel = viewModel.getCoin(indexPath)
         return cell
     }
     
-//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .delete {
-//            StorageManager.shared.deleteCoin(at: indexPath.row)
-//            coinsInPortfolio.remove(at: indexPath.row)
-//            tableView.deleteRows(at: [indexPath], with: .automatic)
-//            reloadWallet()
-//        }
-//    }
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            viewModel.deleteCoin(indexPath) {
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            }
+        }
+    }
 }
