@@ -21,7 +21,7 @@ final class MainTableViewCell: UITableViewCell {
             symbolImage.contentMode = .scaleAspectFit
             symbolImage.clipsToBounds = true
             symbolImage.layer.cornerRadius = symbolImage.frame.height / 2
-            symbolImage.backgroundColor = .black
+            symbolImage.backgroundColor = .clear
         }
     }
     

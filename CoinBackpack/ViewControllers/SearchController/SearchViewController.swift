@@ -9,9 +9,11 @@ import UIKit
 
 final class SearchViewController: UIViewController {
     
+    // MARK: @IBOutlet
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var tableView: UITableView!
     
+    // MARK: Private Properties
     private var viewModel: SearchViewModelProtocol! {
         didSet {
             viewModel.fetchData { [weak self] in
@@ -21,14 +23,17 @@ final class SearchViewController: UIViewController {
         }
     }
     private let searchController = UISearchController(searchResultsController: nil)
+    
     private var searchBarIsEmpty: Bool {
         guard let text = searchController.searchBar.text else { return false }
         return text.isEmpty
     }
+    
     private var isFiltering: Bool {
         return searchController.isActive && !searchBarIsEmpty
     }
     
+    // MARK: Life Circle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,19 +43,19 @@ final class SearchViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
-//        activityIndicator.startAnimating()
-//        fetchMarkets()
+        //        tableView.reloadData()
+        //        activityIndicator.startAnimating()
+        //        fetchMarkets()
     }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let datailVC = segue.destination as? DatailViewController else { return }
         datailVC.viewModel = sender as? DatailViewModelProtocol
-//        datailVC.fetchName(from: sender as? Market)
-//        datailVC.selectedCoins = sender as? Market
     }
-    
+}
+
+extension SearchViewController {
     // MARK: - Private methods
     private func setupUI() {
         setBackgroundColor()
@@ -86,14 +91,14 @@ final class SearchViewController: UIViewController {
         tableView.rowHeight = 70
         tableView.dataSource = self
         tableView.delegate = self
-//        tableView.backgroundColor = .black
+        tableView.backgroundColor = .clear
     }
     
     private func setupSearchController() {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search"
-        searchController.searchBar.barTintColor = .white
+        searchController.searchBar.placeholder = "Coin search"
+//        searchController.searchBar.barTintColor = .green
         navigationItem.searchController = searchController
         definesPresentationContext = true
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -101,19 +106,25 @@ final class SearchViewController: UIViewController {
         if let textField = searchController.searchBar.value(forKey: "searchField") as? UITextField {
             textField.font = UIFont.boldSystemFont(ofSize: 17)
             textField.textColor = .white
+            textField.layer.borderColor = UIColor.colorWith(name: Resources.Colors.active)?.cgColor
+            textField.backgroundColor = UIColor.colorWith(name: Resources.Colors.active)?.withAlphaComponent(0.2)
+            textField.layer.borderWidth = 1
+            textField.layer.cornerRadius = 10
+            textField.layer.masksToBounds = true
         }
     }
     
     private func setupNavigationBar() {
-        navigationItem.title = "Search"
+        navigationItem.title = viewModel.namePage
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.backgroundColor = .black
-        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        
-        self.navigationController?.navigationBar.standardAppearance = navBarAppearance
-        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+        navBarAppearance.backgroundColor = view.backgroundColor
+        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label]
+        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label]
+        navigationController?.navigationBar.standardAppearance = navBarAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+        navigationController?.navigationBar.layer.borderColor = UIColor.colorWith(name: Resources.Colors.active)?.cgColor
+        navigationController?.navigationBar.layer.borderWidth = 1
     }
 }
 
@@ -130,12 +141,7 @@ extension SearchViewController: UITableViewDataSource {
         else {
             return UITableViewCell()
         }
-        
-//        let coinOnMarket = isFiltering
-//        ? filteredMarket[indexPath.row]
-//        : markets[indexPath.row]
         cell.viewModel = viewModel.getSearchCellViewModel(at: indexPath, isFiltering)
-        
         return cell
     }
 }
@@ -143,10 +149,7 @@ extension SearchViewController: UITableViewDataSource {
 // MARK:  UITableViewDelegate
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-//        let selectCoin = isFiltering
-//        ? filteredMarket[indexPath.row]
-//        : markets[indexPath.row]
+        tableView.deselectRow(at: indexPath, animated: true)
         performSegue(withIdentifier: "addCoin", sender: viewModel.getDeteilViewModel(at: indexPath, isFiltering))
     }
 }
@@ -154,8 +157,8 @@ extension SearchViewController: UITableViewDelegate {
 // MARK:  UISearchResultsUpdating
 extension SearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-//        activityIndicator.startAnimating()
-        guard let text = searchController.searchBar.text, text.count >= 2 else { return }
+        activityIndicator.startAnimating()
+        guard let text = searchController.searchBar.text else { return }
         viewModel.searchResults(on: text) { [weak self] in
             self?.activityIndicator.stopAnimating()
             self?.tableView.reloadData()

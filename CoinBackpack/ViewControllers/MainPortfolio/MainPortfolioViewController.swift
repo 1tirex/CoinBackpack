@@ -11,7 +11,13 @@ final class MainPortfolioViewController: UIViewController {
     
     // MARK: @IBOutlet
     @IBOutlet weak var walletLabel: UILabel!
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet var tableView: UITableView!
+    @IBOutlet weak var addButton: UIButton! {
+        didSet {
+            addButton.layer.cornerRadius = 10
+            addButton.backgroundColor = UIColor.colorWith(name: Resources.Colors.active)
+        }
+    }
     
     // MARK: Private Properties
     private var viewModel: MainPortfolioViewModelProtocol! {
@@ -27,32 +33,31 @@ final class MainPortfolioViewController: UIViewController {
         super.viewDidLoad()
         viewModel = MainPortfolioViewModel()
         
-        setBackgroundColor()
-        setupNavigationBar()
-        setupTableView()
-        
-        viewModel.wallet.bind { [unowned self] wallet in
-            self.walletLabel.text = wallet
-        }
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+        viewModel.fetchCoins { [unowned self] in
+            tableView.reloadData()
+        }
     }
-    
-    
-    // MARK: - IBAction
-//    @IBAction func unwindToViewControllerPortfolio(segue: UIStoryboardSegue) {
-//        tableView.reloadData()
-//        reloadWallet()
-//    }
     
     @IBAction func addCoinButtom() {
         tabBarController?.selectedIndex = 1
     }
-    
+}
+
+extension MainPortfolioViewController {
     // MARK: - Private methods
+    private func setupUI() {
+        setBackgroundColor()
+        setupNavigationBar()
+        setupTableView()
+        
+        setupBind()
+    }
+    
     private func setBackgroundColor() {
         view.backgroundColor =
         UIColor { traitCollection in
@@ -68,12 +73,12 @@ final class MainPortfolioViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        navigationItem.title = "Coin BackPack 🎒"
+        navigationItem.title = viewModel.namePage
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithTransparentBackground()
         navBarAppearance.backgroundColor = .clear
-        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.secondaryLabel]
-        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.secondaryLabel]
+        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label]
+        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label]
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
     }
@@ -81,7 +86,26 @@ final class MainPortfolioViewController: UIViewController {
     private func setupTableView() {
         tableView.rowHeight = 70
         tableView.dataSource = self
-//        tableView.delegate = self
+        tableView.delegate = self
+    }
+    
+    private func setupBind() {
+        viewModel.wallet.bind { [unowned self] wallet in
+            if wallet != walletLabel.text {
+                UIView.animate(withDuration: 0.5) { [unowned self] in
+                    walletLabel.textColor = UIColor.colorWith(name: viewModel.colorChangeWallet.value)
+                    walletLabel.alpha = 0.5
+                    walletLabel.text = wallet
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500), execute: {
+                    UIView.animate(withDuration: 0.5) { [unowned self] in
+                        walletLabel.textColor = .label
+                        walletLabel.alpha = 1
+                    }
+                })
+            }
+        }
     }
 }
 
@@ -98,7 +122,6 @@ extension MainPortfolioViewController: UITableViewDataSource {
         else {
             return UITableViewCell()
         }
-        
         cell.viewModel = viewModel.getCoin(indexPath)
         return cell
     }
@@ -111,5 +134,11 @@ extension MainPortfolioViewController: UITableViewDataSource {
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             }
         }
+    }
+}
+
+extension MainPortfolioViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

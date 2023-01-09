@@ -8,16 +8,24 @@
 import Foundation
 
 protocol MainPortfolioViewModelProtocol {
+    var namePage: String { get }
+    var colorChangeWallet: Box<String> { get }
     var wallet: Box<String> { get }
     var numberOfRowsInSection: Int { get }
-    
     func fetchCoins(completion: @escaping() -> Void)
     func getCoin(_: IndexPath) -> MainCellViewModelProtocol
     func deleteCoin(_: IndexPath, completion: @escaping () -> Void)
 }
 
 final class MainPortfolioViewModel: MainPortfolioViewModelProtocol {
+    var namePage: String {
+        Resources.NamesPages.mainPortfolio
+    }
+    
+    var colorChangeWallet: Box<String>
+    
     var wallet: Box<String>
+    
     var numberOfRowsInSection: Int {
         coinsInPortfolio.count
     }
@@ -34,6 +42,7 @@ final class MainPortfolioViewModel: MainPortfolioViewModelProtocol {
     
     required init() {
         wallet = Box("Loading..")
+        colorChangeWallet = Box("")
         gameTimer = Timer.scheduledTimer(
             timeInterval: 10,
             target: self,
@@ -41,20 +50,28 @@ final class MainPortfolioViewModel: MainPortfolioViewModelProtocol {
             userInfo: nil,
             repeats: true)
     }
-    
+}
+
+extension MainPortfolioViewModel {
     @objc private func reloadWallet() {
-//        let wal = coinsInPortfolio.map { $0.totalPrice + $0.profit }.reduce(0, +)
-        wallet.value = "\(String(format: "%.2f", coinsInPortfolio.map { $0.totalPrice + $0.profit }.reduce(0, +)))$"
-        
         coinsInPortfolio.forEach { coin in
             fetchCoin(from: coin.baseAsset)
         }
+        getColorAndNewValueForWallet()
     }
     
     func fetchCoins(completion: @escaping () -> Void) {
         coinsInPortfolio = StorageManager.shared.fetchCoins()
-        completion()
         reloadWallet()
+        completion()
+    }
+    
+    private func getColorAndNewValueForWallet() {
+        let formula = coinsInPortfolio.map { $0.totalPrice + $0.profit }.reduce(0, +)
+        if wallet.value.toFloat() != formula {
+            colorChangeWallet.value = wallet.value.toFloat() > formula ? "systemPink" : "systemMint"
+        }
+        wallet.value = "$\(String(format: "%.2f", formula))"
     }
     
     func getCoin(_ index: IndexPath) -> MainCellViewModelProtocol {
@@ -71,7 +88,7 @@ final class MainPortfolioViewModel: MainPortfolioViewModelProtocol {
     private func fetchCoin(from coin: String) {
         NetworkManager.shared.fetch(
             type: Assets.self,
-            needFor: .coinSearch,
+            needFor: .coinInfoSearch,
             coin: coin.lowercased()) { [weak self] result in
                 switch result {
                 case .success(let loadCoin):

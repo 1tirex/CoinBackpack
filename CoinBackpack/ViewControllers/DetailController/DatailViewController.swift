@@ -9,132 +9,67 @@ import UIKit
 
 final class DatailViewController: UIViewController {
     
-    // MARK: - IBOutlet
+    // MARK: IBOutlet
     @IBOutlet var saveResult: UIBarButtonItem!
-    @IBOutlet var symbolImage: UIImageView!
+    @IBOutlet weak var symbolImage: UIImageView! {
+        didSet {
+            symbolImage.contentMode = .scaleAspectFit
+            symbolImage.clipsToBounds = true
+            symbolImage.layer.cornerRadius = symbolImage.frame.height / 2
+            symbolImage.backgroundColor = .clear
+        }
+    }
     
-    @IBOutlet var nameCoinLabel: UILabel!
-    @IBOutlet var symbolCoinLabel: UILabel!
-    @IBOutlet var exchangeCoinLabel: UILabel!
-    @IBOutlet var priceCoinLabel: UILabel!
-    
+    @IBOutlet weak var nameCoinLabel: UILabel!
+    @IBOutlet weak var symbolCoinLabel: UILabel!
+    @IBOutlet weak var exchangeCoinLabel: UILabel!
+    @IBOutlet weak var priceCoinLabel: UILabel!
     @IBOutlet weak var profitLabel: UILabel!
     @IBOutlet weak var percentLabel: UILabel!
     @IBOutlet weak var totalLabel: UILabel!
+    
     @IBOutlet weak var amountTF: UITextField!
     @IBOutlet weak var buyPriceTF: UITextField!
     
-    // MARK: - Properties
+    // MARK: Properties
     var viewModel: DatailViewModelProtocol!
-//    var selectedCoins: Market!
     
+    // MARK: Life Circle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        view.endEditing(true)
-    }
-    
-    // MARK: - Navigation
-    
-    // MARK: - IBAction
+    // MARK: IBAction
     @IBAction func saveResults(_ sender: UIBarButtonItem) {
         if amountTF.text == "" || buyPriceTF.text == "" {
             showAlert(stutus: .failed)
         } else {
-            //            guard let nameCoin = self.nameCoinLabel.text,
-            //                  let amount = self.amountTF.text,
-            //                  let buyPrice = self.buyPriceTF.text else { return }
-            
-            //            let coinInfo = Coin(name: nameCoin,
-            //                                symbol: selectedCoins.symbol,
-            //                                baseAsset: selectedCoins.baseAsset,
-            //                                quoteAsset: selectedCoins.quoteAsset,
-            //                                imageCoin: selectedCoins.baseAsset,
-            //                                exchange: selectedCoins.exchange,
-            //                                price: selectedCoins.price,
-            //                                amountCoins: Float(amount) ?? 0,
-            //                                buyPriceCoin: Float(buyPrice) ?? 0)
-            
-            //            StorageManager.shared.save(coin: coinInfo)
-            tabBarController?.selectedIndex = 0
-            //            performSegue(withIdentifier: "unwindToPortfolio", sender: self)
+            viewModel.saveResults { [unowned self] in
+                tabBarController?.selectedIndex = 0
+                navigationController?.popToRootViewController(animated: false)
+            }
         }
     }
     
-//    @IBAction func amountTFChanged(_ sender: UITextField) {
-//        if amountTF.text == "", buyPriceTF.text != "" {
-//
-//            guard let buyPrice = buyPriceTF.text else { return }
-//            self.totalLabel.text = "\(buyPrice)$"
-//            profitСalculation(buy: buyPrice)
-//            self.saveResult.isEnabled = false
-//
-//        } else if let _ = buyPriceTF.text?.isNumber,
-//                  buyPriceTF.text != "",
-//                  amountTF.text != "" {
-//
-//            guard let buyPriceText = self.buyPriceTF.text,
-//                  let amtText = sender.text,
-//                  let buyPrice = Float(buyPriceText),
-//                  let amt = Float(amtText)  else { return }
-//
-//            self.totalLabel.text = "\(amt * buyPrice)$"
-//            profitСalculation(amt: amtText, buy: buyPriceText)
-//            self.saveResult.isEnabled = !amtText.isEmpty
-//
-//        } else {
-//            self.totalLabel.text = "0.00$"
-//            profitСalculation()
-//            self.saveResult.isEnabled = false
-//        }
-//
-//    }
-//
-//    @IBAction func buyPriceTFChanged(_ sender: UITextField) {
-//        if amountTF.text == "", buyPriceTF.text != "" {
-//
-//            guard let buyPrice = sender.text else { return }
-//            self.totalLabel.text = "\(buyPrice)$"
-//            profitСalculation(buy: buyPrice)
-//            self.saveResult.isEnabled = false
-//
-//        } else if let _ = amountTF.text?.isNumber,
-//                  amountTF.text != "",
-//                  buyPriceTF.text != "" {
-//
-//            guard let amountText = self.amountTF.text,
-//                  let buyPriceText = sender.text,
-//                  let amount = Float(amountText),
-//                  let buy = Float(buyPriceText)  else { return }
-//
-//            self.totalLabel.text = "\(buy * amount)$"
-//            profitСalculation(amt: amountText, buy: buyPriceText)
-//            self.saveResult.isEnabled = !buyPriceText.isEmpty
-//
-//        } else {
-//            self.totalLabel.text = "0.00$"
-//            profitСalculation()
-//            self.saveResult.isEnabled = false
-//        }
-//    }
-    
-    // MARK: - Private methods
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
+    }
+}
+
+extension DatailViewController {
+    // MARK: Private methods
     private func setupUI() {
+        saveResult.isEnabled = false
         setBackgroundColor()
         setupLabels()
         
         amountTF.becomeFirstResponder()
-        configureTF(with: amountTF, .lightGray, "Amount")
-        configureTF(with: buyPriceTF, .lightGray, "Purchase")
-        
-        viewModel.name.bind { [unowned self] newValue in
-            nameCoinLabel.text = newValue
-        }
+        configureTF(with: amountTF, placeholder: "Amount")
+        configureTF(with: buyPriceTF, placeholder: "Purchase")
+        setupBind()
     }
     
     private func setBackgroundColor() {
@@ -151,73 +86,58 @@ final class DatailViewController: UIViewController {
         }
     }
     
-    private func configureTF(with TF: UITextField,
-                             _ color: UIColor,
-                             _ text: String) {
+    private func configureTF(with TF: UITextField, placeholder: String) {
         TF.delegate = self
-        TF.attributedPlaceholder = NSAttributedString(
-            string: text,
-            attributes: [NSAttributedString.Key.foregroundColor : color]
-        )
+        TF.placeholder = placeholder
+        TF.layer.borderColor = UIColor.colorWith(name: Resources.Colors.active)?.cgColor
+        TF.layer.borderWidth = 1
+        TF.layer.cornerRadius = 10
+        TF.backgroundColor = UIColor.colorWith(name: Resources.Colors.active)?.withAlphaComponent(0.2)
+        TF.layer.masksToBounds = true
     }
     
     private func setupLabels() {
-        self.symbolImage.image = UIImage(named: viewModel.image)
-        self.symbolCoinLabel.text = viewModel.symbol
-        self.exchangeCoinLabel.text  = viewModel.exchange
-        self.priceCoinLabel.text = viewModel.price
-        self.nameCoinLabel.text = viewModel.name.value
-        self.percentLabel.text = ""
-        self.profitLabel.text = ""
+        symbolImage.image = UIImage(named: viewModel.image)
+        symbolCoinLabel.text = viewModel.symbol
+        exchangeCoinLabel.text  = viewModel.exchange
+        priceCoinLabel.text = viewModel.price
+        nameCoinLabel.text = viewModel.name.value
+        totalLabel.text = viewModel.total.value
+        percentLabel.text = viewModel.percent.value
+        profitLabel.text = viewModel.profit.value
     }
     
-//    private func profitСalculation(amt amount: Float = 0, buy buyPrice: Float = 0, price: Float) {
-//        if amount.isZero, !buyPrice.isZero {
-//
-//            let percentage = price / selectedCoins.price
-//            let percent = (selectedCoins.price - price) / percentage
-//            let gainMoney = (selectedCoins.price - price)
-//
-//            (percent.sign == .minus)
-//            ? (self.percentLabel.text = "\(String(format: "%.2f", percent))%")
-//            : (self.percentLabel.text = "+\(String(format: "%.2f", percent))%")
-//
-//            (gainMoney.sign == .minus)
-//            ? (self.profitLabel.text = "\(String(format: "%.2f", gainMoney))$")
-//            : (self.profitLabel.text = "+\(String(format: "%.2f", gainMoney))$")
-//
-//        } else if !amount.isEmpty, !buyPrice.isEmpty {
-//            guard let amt = Float(amount), let price = Float(buyPrice) else { return }
-//
-//            let percentage = (amt * price) / selectedCoins.price
-//            let percent = (amt * selectedCoins.price - amt * price) / percentage
-//            let gainMoney = (selectedCoins.price - price) * amt
-//
-//            (percent.sign == .minus)
-//            ? (self.percentLabel.text = "\(String(format: "%.2f", percent))%")
-//            : (self.percentLabel.text = "+\(String(format: "%.2f", percent))%")
-//
-//            (gainMoney.sign == .minus)
-//            ? (self.profitLabel.text = "\(String(format: "%.2f", gainMoney))$")
-//            : (self.profitLabel.text = "+\(String(format: "%.2f", gainMoney))$")
-//        } else {
-//            self.percentLabel.text = ""
-//            self.profitLabel.text = ""
-//        }
-//        profitСolorСhanges()
-//    }
+    private func setupBind() {
+        viewModel.name.bind { [unowned self] newValue in
+            nameCoinLabel.text = newValue
+        }
+        
+        viewModel.profit.bind { [unowned self] newValue in
+            profitLabel.text = newValue
+            
+        }
+        
+        viewModel.percent.bind { [unowned self] newValue in
+            percentLabel.text = newValue
+        }
+        
+        viewModel.total.bind { [unowned self] newValue in
+            totalLabel.text = newValue
+            profitСolorСhanges()
+            saveResult.isEnabled = viewModel.statusIsEnabled
+        }
+    }
     
     private func profitСolorСhanges() {
         guard let percent = self.percentLabel.text,
-                let gainMoney = self.profitLabel.text else { return }
+              let profit = self.profitLabel.text else { return }
         
-        if percent.contains("-"), gainMoney.contains("-") {
+        if percent.contains("-"), profit.contains("-") {
             self.percentLabel.textColor = .systemPink
             self.profitLabel.textColor = .systemPink
-        } else if percent.contains("+"), gainMoney.contains("+") {
-            let rgba = UIColor(red: 115/255, green: 250/255, blue: 121/255, alpha: 1.0)
-            self.percentLabel.textColor = rgba
-            self.profitLabel.textColor = rgba
+        } else {
+            self.percentLabel.textColor = .systemMint
+            self.profitLabel.textColor = .systemMint
         }
     }
     
@@ -232,38 +152,6 @@ final class DatailViewController: UIViewController {
         alert.addAction(okAction)
         present(alert, animated: true)
     }
-    
-    private func filterContentForCoin(_ coin: String, _ loadNames: [AssetsCoin]) {
-        
-        if  loadNames.contains(where: { name in
-            name.name.uppercased() == coin.uppercased()}) {
-            
-            let filtered = loadNames.filter { name in
-                name.name.uppercased() == coin.uppercased()}
-            self.nameCoinLabel.text = filtered.first?.name
-            
-        } else {
-            self.nameCoinLabel.text = coin
-        }
-    }
-}
-// MARK: - Extension
-extension DatailViewController {
-//    func fetchName(from coin: Market?) {
-//        NetworkManager.shared.fetch(
-//            type: Assets.self,
-//            needFor: .coinSearch,
-//            coin: coin?.baseAsset.uppercased()) { [weak self] result in
-//                switch result {
-//                case .success(let loadName):
-//                    self?.filterContentForCoin(
-//                        coin?.baseAsset ?? "",
-//                        loadName.assets ?? []) // incorrect
-//                case .failure(let error):
-//                    print(error)
-//                }
-//            }
-//    }
 }
 
 // MARK: - UITextFieldDelegate
@@ -271,27 +159,45 @@ extension DatailViewController: UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
         guard let text = textField.text else { return }
-//        saveResult.isEnabled = !text.isEmpty ? true : false
-//        alert.actions
-//            .filter { $0.style == .default }
-//            .first?.isEnabled = viewModel.checkingIsEmpty(textField: textField.text)
-        print("ine \(text)")
+        
+        switch textField {
+        case amountTF:
+            viewModel.getText(from: text, .amount)
+        case buyPriceTF:
+            viewModel.getText(from: text, .purchase)
+        default:
+            print("text field text error")
+        }
+
+        if viewModel.purchase.value.isZero {
+            profitLabel.isHidden = true
+            percentLabel.isHidden = true
+            totalLabel.isHidden = true
+        } else {
+            profitLabel.isHidden = false
+            percentLabel.isHidden = false
+            totalLabel.isHidden = false
+        }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard let text = textField.text else { return }
-        
-//        if text.isEmpty, buyPriceTF.text == "" {
-//            self.totalLabel.text = "0.00$"
-////            profitСalculation()
-//        }
-        
-        print(text)
+        let newCharSet = CharacterSet.init(charactersIn: "!@#$%^&*(){},?/|[]§±<>-_=+'")
+        textField.text = text.components(separatedBy: newCharSet).joined(separator: ".")
     }
-}
 
-extension String  {
-    var isNumber: Bool {
-        !isEmpty && rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        var shouldChange : Bool = true
+        let newCharSet = CharacterSet.init(charactersIn: "!@#$%^&*(){},?/|[]§±<>-_=+'")
+        let numberString = (textField.text ?? "").replacingOccurrences(of: ",", with: ".").components(separatedBy: newCharSet).joined(separator: ".")
+
+            if Character(string) == ".", !numberString.contains("."), !numberString.isEmpty {
+                shouldChange = true
+            } else if Character(string).isNumber {
+                shouldChange = true
+            } else {
+                shouldChange = false
+            }
+        return shouldChange
     }
 }

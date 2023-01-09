@@ -15,30 +15,35 @@ public struct CreateLink {
     public init(needLinkFor: TypeLink, baseAsset coin: String = "") {
         self.needLinkFor = needLinkFor
         self.coin = coin
+        var url = ""
         
         switch needLinkFor {
         case .markets:
-            let url = "https://cryptingup.com/api/markets?size=10"
-            self.url = url
+            url = "https://cryptingup.com/api/markets?size=10"
+//            self.url = url
         case .marketsAll:
-            let url = "https://cryptingup.com/api/markets?size=all"
-            self.url = url
-        case .coinSearch:
-            let url = "https://cryptingup.com/api/assets/\(coin.uppercased())"
-            self.url = url
+            url = "https://cryptingup.com/api/markets?size=all"
+//            self.url = url
+        case .coinMarketsSearch:
+            url = "https://cryptingup.com/api/assets/\(coin.uppercased())/markets"
+//            self.url = url
         case .assetsCoin:
-            let url = "https://cryptingup.com/api/assets?size=10"
-            self.url = url
+            url = "https://cryptingup.com/api/assets?size=10"
+//            self.url = url
         case .postRequest:
-            let url = "https://jsonplaceholder.typicode.com/posts"
-            self.url = url
+            url = "https://jsonplaceholder.typicode.com/posts"
+//            self.url = url
+        case .coinInfoSearch:
+            url = "https://cryptingup.com/api/assets/\(coin.uppercased())"
         }
+        
+        self.url = url
     }
 }
 
 // MARK: - CreateLink
 public extension CreateLink {
     enum TypeLink: String {
-        case markets, marketsAll, coinSearch, assetsCoin, postRequest
+        case markets, marketsAll, coinMarketsSearch, coinInfoSearch, assetsCoin, postRequest
     }
 }

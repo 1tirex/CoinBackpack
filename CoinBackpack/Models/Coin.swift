@@ -41,7 +41,7 @@ struct Coin: Codable {
     
     init(name: String, symbol: String, baseAsset: String,
          quoteAsset: String, imageCoin: String, exchange: String,
-         price: Float, amountCoins: Float, buyPriceCoin: Float) {
+         price: Float, amountCoins: Float, purchase: Float) {
         
         self.name = name
         self.symbol = symbol
@@ -51,9 +51,9 @@ struct Coin: Codable {
         self.exchange = exchange
         self.price = price
         self.amount = amountCoins
-        self.purchase = buyPriceCoin
-        self.totalPrice = amountCoins * buyPriceCoin
-        self.percent = (price - buyPriceCoin) / (buyPriceCoin / price)
-        self.profit = price - buyPriceCoin
+        self.purchase = purchase
+        self.totalPrice = amountCoins * purchase
+        self.percent = (price - purchase) / (purchase / price)
+        self.profit = price - purchase
     }
 }

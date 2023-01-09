@@ -8,6 +8,7 @@
 import Foundation
 
 protocol SearchViewModelProtocol {
+    var namePage: String { get }
     func fetchData(completion: @escaping() -> Void)
     func searchResults(on: String, completion: @escaping() -> Void)
     func numberOfRowsInSection(_: Bool) -> Int
@@ -16,10 +17,15 @@ protocol SearchViewModelProtocol {
 }
 
 final class SearchViewModel: SearchViewModelProtocol {
+    var namePage: String {
+        Resources.NamesPages.search
+    }
     
     private var filteredMarket: [Market] = []
     private var markets: [Market] = []
-    
+}
+
+extension SearchViewModel {
     func fetchData(completion: @escaping () -> Void) {
         NetworkManager.shared.fetch(
             type: CoinsMarkets.self,
@@ -35,26 +41,28 @@ final class SearchViewModel: SearchViewModelProtocol {
     }
     
     func searchResults(on coin: String, completion: @escaping () -> Void) {
-        NetworkManager.shared.fetch(
-            type: CoinsMarkets.self,
-            needFor: .coinSearch,
-            coin: coin.lowercased()) { [weak self] result in
-                switch result {
-                case .success(let loadCoin):
-                    self?.filteredMarket = loadCoin.markets.filter { $0.baseAsset.uppercased() == coin.uppercased() }
-//                    self?.filterContentForSearchText(coin, loadCoin.markets)
-                    completion()
-                case .failure(let error):
-                    print(error)
+        if coin.count > 1, !coin.isEmpty {
+            NetworkManager.shared.fetch(
+                type: CoinsMarkets.self,
+                needFor: .coinMarketsSearch,
+                coin: coin.lowercased()) { [weak self] result in
+                    switch result {
+                    case .success(let loadCoin):
+                        self?.filteredMarket = loadCoin.markets.filter { $0.baseAsset.uppercased() == coin.uppercased() }
+                        //                    self?.filterContentForSearchText(coin, loadCoin.markets)
+                        completion()
+                    case .failure(let error):
+                        print(error)
+                    }
                 }
+        } else {
+            fetchData {
+                completion()
             }
+        }
     }
     
-//    private func filterContentForSearchText(_ searchText: String,
-//                                            _ loadMarket: [Market]) {
-//        filteredMarket = loadMarket.filter { $0.baseAsset.uppercased() == searchText.uppercased() }
-////        tableView.reloadData()
-//    }
+
     
     func numberOfRowsInSection(_ isFiltering: Bool) -> Int {
         isFiltering ? filteredMarket.count : markets.count

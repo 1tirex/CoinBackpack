@@ -10,11 +10,14 @@ import Alamofire
 
 final class StorageManager {
     static let shared = StorageManager()
-
+    
     private let defaults = UserDefaults.standard
     private let coinKey = "coinsKey"
     
     private init() {}
+}
+
+extension StorageManager {
     
     func fetchCoins() -> [Coin] {
         guard let data = defaults.data(forKey: coinKey) else { return [] }

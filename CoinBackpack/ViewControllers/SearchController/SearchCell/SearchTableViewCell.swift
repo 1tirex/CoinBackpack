@@ -16,7 +16,7 @@ final class SearchTableViewCell: UITableViewCell {
             symbolImage.contentMode = .scaleAspectFit
             symbolImage.clipsToBounds = true
             symbolImage.layer.cornerRadius = symbolImage.frame.height / 2
-            symbolImage.backgroundColor = .black
+            symbolImage.backgroundColor = .clear
         }
     }
     
@@ -28,11 +28,4 @@ final class SearchTableViewCell: UITableViewCell {
             symbolImage.image = UIImage(named: viewModel.image)
         }
     }
-    
-//    func configure(with coin: Market?) {
-//        self.symbolLabel.text = coin?.symbol
-//        self.priceLabel.text = "\(String(format: "%.6f", coin?.price ?? 0))$"
-//        self.exchengeLabel.text = coin?.exchange
-//        self.symbolImage.image = UIImage(named: coin?.baseAsset.lowercased() ?? "")
-//    }
 }
