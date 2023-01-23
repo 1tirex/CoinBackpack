@@ -98,7 +98,7 @@ extension SearchViewController {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Coin search"
-//        searchController.searchBar.barTintColor = .green
+        //        searchController.searchBar.barTintColor = .green
         navigationItem.searchController = searchController
         definesPresentationContext = true
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -123,8 +123,6 @@ extension SearchViewController {
         navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label]
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-        navigationController?.navigationBar.layer.borderColor = UIColor.colorWith(name: Resources.Colors.active)?.cgColor
-        navigationController?.navigationBar.layer.borderWidth = 1
     }
 }
 
@@ -150,6 +148,7 @@ extension SearchViewController: UITableViewDataSource {
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        searchController.searchBar.text = ""
         performSegue(withIdentifier: "addCoin", sender: viewModel.getDeteilViewModel(at: indexPath, isFiltering))
     }
 }

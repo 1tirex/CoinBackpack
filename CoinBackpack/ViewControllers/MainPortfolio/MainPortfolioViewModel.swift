@@ -9,18 +9,28 @@ import Foundation
 
 protocol MainPortfolioViewModelProtocol {
     var namePage: String { get }
+    var isTapped: Box<Bool> { get }
+    var percent: Box<Double> { get }
+    var purchase: Box<String> { get }
     var colorChangeWallet: Box<String> { get }
     var wallet: Box<String> { get }
     var numberOfRowsInSection: Int { get }
     func fetchCoins(completion: @escaping() -> Void)
     func getCoin(_: IndexPath) -> MainCellViewModelProtocol
     func deleteCoin(_: IndexPath, completion: @escaping () -> Void)
+    func tabSortButton()
 }
 
 final class MainPortfolioViewModel: MainPortfolioViewModelProtocol {
     var namePage: String {
         Resources.NamesPages.mainPortfolio
     }
+    
+    var isTapped: Box<Bool>
+    
+    var percent: Box<Double>
+    
+    var purchase: Box<String>
     
     var colorChangeWallet: Box<String>
     
@@ -32,23 +42,16 @@ final class MainPortfolioViewModel: MainPortfolioViewModelProtocol {
     
     private var gameTimer: Timer?
     
-    private var coinsInPortfolio: [Coin] = [] {
-        didSet {
-            coinsInPortfolio = coinsInPortfolio.sorted {
-                $0.totalPrice > $1.totalPrice
-            }
-        }
-    }
+    private var coinsInPortfolio: [Coin] = []
     
     required init() {
-        wallet = Box("Loading..")
+        wallet = Box("$0.00")
         colorChangeWallet = Box("")
-        gameTimer = Timer.scheduledTimer(
-            timeInterval: 10,
-            target: self,
-            selector: #selector(reloadWallet),
-            userInfo: nil,
-            repeats: true)
+        purchase = Box("$0.00")
+        percent = Box(0)
+        isTapped = Box(true)
+        
+        settingTimer()
     }
 }
 
@@ -58,20 +61,15 @@ extension MainPortfolioViewModel {
             fetchCoin(from: coin.baseAsset)
         }
         getColorAndNewValueForWallet()
+        
+        //        percent.value = Double(setRating(coinsInPortfolio.map { $0.profit }))
     }
     
     func fetchCoins(completion: @escaping () -> Void) {
         coinsInPortfolio = StorageManager.shared.fetchCoins()
         reloadWallet()
+        coinsInPortfolio = coinsInPortfolio.sorted { $0.totalPrice > $1.totalPrice }
         completion()
-    }
-    
-    private func getColorAndNewValueForWallet() {
-        let formula = coinsInPortfolio.map { $0.totalPrice + $0.profit }.reduce(0, +)
-        if wallet.value.toFloat() != formula {
-            colorChangeWallet.value = wallet.value.toFloat() > formula ? "systemPink" : "systemMint"
-        }
-        wallet.value = "$\(String(format: "%.2f", formula))"
     }
     
     func getCoin(_ index: IndexPath) -> MainCellViewModelProtocol {
@@ -81,8 +79,46 @@ extension MainPortfolioViewModel {
     func deleteCoin(_ index: IndexPath, completion: @escaping () -> Void) {
         StorageManager.shared.deleteCoin(at: index.row)
         coinsInPortfolio.remove(at: index.row)
-        reloadWallet()
         completion()
+        reloadWallet()
+    }
+    
+    func tabSortButton() {
+        isTapped.value.toggle()
+        
+        coinsInPortfolio = isTapped.value
+        ? coinsInPortfolio.sorted { $0.profit > $1.profit }
+        : coinsInPortfolio.sorted { $0.profit < $1.profit }
+    }
+    
+    private func settingTimer() {
+        gameTimer = Timer.scheduledTimer(
+            timeInterval: 10,
+            target: self,
+            selector: #selector(reloadWallet),
+            userInfo: nil,
+            repeats: true)
+        gameTimer?.tolerance = 0.2
+        RunLoop.current.add(gameTimer ?? .init(), forMode: .common)
+    }
+    
+    private func getColorAndNewValueForWallet() {
+        let formulaForWallet = coinsInPortfolio.map { $0.totalPrice + $0.profit }.reduce(0, +)
+        let formulaForPurchase = coinsInPortfolio.map { $0.profit }.reduce(0, +)
+        if wallet.value.toFloat() != formulaForWallet {
+            if wallet.value.toFloat() > formulaForWallet {
+                colorChangeWallet.value = "systemPink"
+            } else if wallet.value.toFloat() < formulaForWallet {
+                colorChangeWallet.value = "systemMint"
+            } else {
+                colorChangeWallet.value = "label"
+            }
+            wallet.value = "$\(String(format: "%.2f", formulaForWallet))"
+            
+            if purchase.value.toFloat() != formulaForPurchase {
+                purchase.value = "$\(String(format: "%.2f", formulaForPurchase))"
+            }
+        }
     }
     
     private func fetchCoin(from coin: String) {

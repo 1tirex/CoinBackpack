@@ -10,7 +10,9 @@ import UIKit
 final class MainPortfolioViewController: UIViewController {
     
     // MARK: @IBOutlet
+    @IBOutlet weak var sortButton: UIButton!
     @IBOutlet weak var walletLabel: UILabel!
+    @IBOutlet weak var purchaseLabel: UILabel!
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var addButton: UIButton! {
         didSet {
@@ -22,8 +24,10 @@ final class MainPortfolioViewController: UIViewController {
     // MARK: Private Properties
     private var viewModel: MainPortfolioViewModelProtocol! {
         didSet {
-            viewModel.fetchCoins { [unowned self] in
-                tableView.reloadData()
+            viewModel.fetchCoins {
+                DispatchQueue.main.async { [unowned self] in
+                    tableView.reloadData()
+                }
             }
         }
     }
@@ -38,8 +42,10 @@ final class MainPortfolioViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.fetchCoins { [unowned self] in
-            tableView.reloadData()
+        viewModel.fetchCoins { 
+            DispatchQueue.main.async { [unowned self] in
+                tableView.reloadData()
+            }
         }
     }
     
@@ -54,6 +60,7 @@ extension MainPortfolioViewController {
         setBackgroundColor()
         setupNavigationBar()
         setupTableView()
+        setupSortButton()
         
         setupBind()
     }
@@ -93,25 +100,76 @@ extension MainPortfolioViewController {
         viewModel.wallet.bind { [unowned self] wallet in
             if wallet != walletLabel.text {
                 UIView.animate(withDuration: 0.5) { [unowned self] in
-                    walletLabel.textColor = UIColor.colorWith(name: viewModel.colorChangeWallet.value)
                     walletLabel.alpha = 0.5
                     walletLabel.text = wallet
+                    walletLabel.textColor = UIColor.colorWith(name: viewModel.colorChangeWallet.value)
                 }
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500), execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300), execute: {
                     UIView.animate(withDuration: 0.5) { [unowned self] in
                         walletLabel.textColor = .label
                         walletLabel.alpha = 1
                     }
                 })
             }
+            //            reitingView.updateCirclePercentage(percent: viewModel.percent.value)
+            //            reitingView.updateCirclePercentage(percent: 9)
+            DispatchQueue.main.async { [unowned self] in
+                tableView.reloadData()
+            }
         }
+        
+        viewModel.purchase.bind { [unowned self] newValue in
+            if purchaseLabel.text != newValue {
+                UIView.animate(withDuration: 0.5) { [unowned self] in
+                    purchaseLabel.alpha = 0.5
+                    purchaseLabel.textColor = UIColor.colorWith(name: viewModel.colorChangeWallet.value)
+                    purchaseLabel.text = newValue
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300), execute: {
+                    UIView.animate(withDuration: 0.5) { [unowned self] in
+                        purchaseLabel.textColor = .label //purchaseLabel.text?.toFloat() ?? 0 > 0
+                        //                        ? .systemMint
+                        //                        : .systemPink
+                        purchaseLabel.alpha = 1
+                    }
+                })
+            }
+        }
+        
+        viewModel.isTapped.bind { _ in
+            DispatchQueue.main.async { [unowned self] in
+                tableView.reloadData()
+            }
+        }
+    }
+    
+    private func setupSortButton() {
+        sortButton.layer.cornerRadius = 5
+        sortButton.layer.borderColor = UIColor.colorWith(name: Resources.Colors.active)?.cgColor
+        sortButton.layer.borderWidth = 1
+        
+        sortButton.tintColor = UIColor.colorWith(name: Resources.Colors.inActive)
+        sortButton.backgroundColor = UIColor.colorWith(name: Resources.Colors.active)?.withAlphaComponent(0.3)
+        
+        sortButton.addTarget(self, action: #selector(tabSortButton), for: .touchUpInside)
+    }
+    
+    @objc private func tabSortButton() {
+        viewModel.tabSortButton()
     }
 }
 
 extension MainPortfolioViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.numberOfRowsInSection
+        if viewModel.numberOfRowsInSection == 0 {
+            sortButton.isHidden = true
+            return viewModel.numberOfRowsInSection
+        } else {
+            sortButton.isHidden = false
+            return viewModel.numberOfRowsInSection
+        }
     }
     
     func tableView(_ tableView: UITableView,
@@ -122,6 +180,7 @@ extension MainPortfolioViewController: UITableViewDataSource {
         else {
             return UITableViewCell()
         }
+        
         cell.viewModel = viewModel.getCoin(indexPath)
         return cell
     }
@@ -131,7 +190,9 @@ extension MainPortfolioViewController: UITableViewDataSource {
                    forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             viewModel.deleteCoin(indexPath) {
-                tableView.deleteRows(at: [indexPath], with: .automatic)
+                DispatchQueue.main.async {
+                    tableView.deleteRows(at: [indexPath], with: .automatic)
+                }
             }
         }
     }

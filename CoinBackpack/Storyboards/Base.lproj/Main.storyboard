@@ -84,19 +84,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="838"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="7lg-82-uRM">
-                                <rect key="frame" x="15" y="91" width="384" height="42.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="7lg-82-uRM">
+                                <rect key="frame" x="25" y="81" width="374" height="60.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00$" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vBG-aX-R7p">
-                                        <rect key="frame" x="0.0" y="0.0" width="384" height="42.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$0.00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vBG-aX-R7p">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="42.5"/>
                                         <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="35"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$0.00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M4q-Xi-VBq">
+                                        <rect key="frame" x="0.0" y="42.5" width="374" height="18"/>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="klC-hx-ZjJ">
-                                <rect key="frame" x="25" y="158.5" width="364" height="34.5"/>
+                                <rect key="frame" x="25" y="156.5" width="364" height="34.5"/>
                                 <color key="backgroundColor" systemColor="systemIndigoColor"/>
                                 <color key="tintColor" systemColor="systemIndigoColor"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -108,9 +114,19 @@
                                     <action selector="addCoinButtom" destination="PRW-vY-Lf8" eventType="touchUpInside" id="CKG-kA-ZMz"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PWM-3w-5Uw">
+                                <rect key="frame" x="319" y="196" width="70" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="Xga-ra-wbb"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="18"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="sort"/>
+                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Q69-fR-Sz7">
-                                <rect key="frame" x="0.0" y="218" width="414" height="595"/>
+                                <rect key="frame" x="0.0" y="235" width="414" height="578"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                                 <color key="sectionIndexColor" systemColor="labelColor"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -158,7 +174,7 @@
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="profit" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sWk-hG-iqA">
                                                                     <rect key="frame" x="0.0" y="0.0" width="30.5" height="18"/>
                                                                     <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="13"/>
-                                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <color key="textColor" white="0.67000000000000004" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="gain" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AR8-M7-U8X">
@@ -218,15 +234,17 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="tpC-1Q-g03" firstAttribute="trailing" secondItem="klC-hx-ZjJ" secondAttribute="trailing" constant="25" id="5Uy-om-O3Z"/>
+                            <constraint firstItem="klC-hx-ZjJ" firstAttribute="top" secondItem="7lg-82-uRM" secondAttribute="bottom" constant="15" id="9TU-Gm-Nlt"/>
                             <constraint firstItem="tpC-1Q-g03" firstAttribute="trailing" secondItem="Q69-fR-Sz7" secondAttribute="trailing" id="E4L-hO-ZpH"/>
                             <constraint firstItem="tpC-1Q-g03" firstAttribute="trailing" secondItem="7lg-82-uRM" secondAttribute="trailing" constant="15" id="K6L-vi-EjY"/>
                             <constraint firstItem="klC-hx-ZjJ" firstAttribute="leading" secondItem="tpC-1Q-g03" secondAttribute="leading" constant="25" id="OV6-iJ-8pU"/>
-                            <constraint firstItem="Q69-fR-Sz7" firstAttribute="top" secondItem="klC-hx-ZjJ" secondAttribute="bottom" constant="25" id="WnL-qb-NkV"/>
-                            <constraint firstItem="7lg-82-uRM" firstAttribute="top" secondItem="tpC-1Q-g03" secondAttribute="top" constant="35" id="afr-xG-rHQ"/>
+                            <constraint firstItem="7lg-82-uRM" firstAttribute="top" secondItem="tpC-1Q-g03" secondAttribute="top" constant="25" id="afr-xG-rHQ"/>
                             <constraint firstItem="Q69-fR-Sz7" firstAttribute="leading" secondItem="tpC-1Q-g03" secondAttribute="leading" id="dob-GU-5fi"/>
-                            <constraint firstItem="klC-hx-ZjJ" firstAttribute="top" secondItem="vBG-aX-R7p" secondAttribute="bottom" constant="25" id="enV-E8-NYJ"/>
                             <constraint firstItem="tpC-1Q-g03" firstAttribute="bottom" secondItem="Q69-fR-Sz7" secondAttribute="bottom" id="fJh-z9-Z5b"/>
-                            <constraint firstItem="7lg-82-uRM" firstAttribute="leading" secondItem="tpC-1Q-g03" secondAttribute="leading" constant="15" id="l0w-Ke-0cZ"/>
+                            <constraint firstItem="7lg-82-uRM" firstAttribute="leading" secondItem="tpC-1Q-g03" secondAttribute="leading" constant="25" id="l0w-Ke-0cZ"/>
+                            <constraint firstItem="Q69-fR-Sz7" firstAttribute="top" secondItem="PWM-3w-5Uw" secondAttribute="bottom" constant="5" id="nz9-wA-ePe"/>
+                            <constraint firstItem="PWM-3w-5Uw" firstAttribute="top" secondItem="klC-hx-ZjJ" secondAttribute="bottom" constant="5" id="oix-4e-I2g"/>
+                            <constraint firstItem="PWM-3w-5Uw" firstAttribute="trailing" secondItem="klC-hx-ZjJ" secondAttribute="trailing" id="yBO-pw-nby"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Coin BackPack  🎒" id="EzY-vd-vZq">
@@ -234,6 +252,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addButton" destination="klC-hx-ZjJ" id="b0c-mK-Q8k"/>
+                        <outlet property="purchaseLabel" destination="M4q-Xi-VBq" id="PEh-R6-uN3"/>
+                        <outlet property="sortButton" destination="PWM-3w-5Uw" id="JXB-YA-3yT"/>
                         <outlet property="tableView" destination="Q69-fR-Sz7" id="3UZ-Vq-HlD"/>
                         <outlet property="walletLabel" destination="vBG-aX-R7p" id="dOR-CY-1Dj"/>
                     </connections>
@@ -281,9 +301,11 @@
                                 <rect key="frame" x="197" y="438" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </activityIndicatorView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Pv3-Sj-4DX">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="singleLineEtched" rowHeight="-1" estimatedRowHeight="1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="1" sectionFooterHeight="28" estimatedSectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="Pv3-Sj-4DX">
                                 <rect key="frame" x="0.0" y="56" width="414" height="757"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="separatorColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="separatorInset" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" rowHeight="70" id="FeV-aP-GiD" customClass="SearchTableViewCell" customModule="CoinBackpack" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="414" height="70"/>
@@ -327,6 +349,7 @@
                                                 <constraint firstItem="mRi-cR-vND" firstAttribute="centerY" secondItem="dLW-7G-zXn" secondAttribute="centerY" constant="-10" id="Vq7-Ea-FSj"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="exchengeLabel" destination="JfQ-np-ogT" id="azR-o0-OKr"/>
                                             <outlet property="priceLabel" destination="mRi-cR-vND" id="B7u-Rc-0YF"/>

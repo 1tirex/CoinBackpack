@@ -18,11 +18,6 @@ struct Coin: Codable {
     let totalPrice: Float
     let percent: Float
     let profit: Float
-    //    let change24Hour: Float
-    //    let volume24Hour: Float
-    //    let priceUnconverted: Float
-    //    let spread: Float
-    //    let updated: String
     
     init(asset: AssetsCoin, coin: Coin) {
         self.name = asset.name
@@ -35,8 +30,8 @@ struct Coin: Codable {
         self.amount = coin.amount
         self.purchase = coin.purchase
         self.totalPrice = amount * purchase
-        self.percent = (price - purchase) / (purchase / price)
-        self.profit = price - purchase
+        self.percent = (price * amount - purchase * amount) / (amount * purchase) / price
+        self.profit = (price - purchase) * amount
     }
     
     init(name: String, symbol: String, baseAsset: String,
@@ -53,7 +48,7 @@ struct Coin: Codable {
         self.amount = amountCoins
         self.purchase = purchase
         self.totalPrice = amountCoins * purchase
-        self.percent = (price - purchase) / (purchase / price)
-        self.profit = price - purchase
+        self.percent = (amountCoins * price - amountCoins * purchase) / (amountCoins * purchase) / price
+        self.profit = (price - purchase) * amountCoins
     }
 }

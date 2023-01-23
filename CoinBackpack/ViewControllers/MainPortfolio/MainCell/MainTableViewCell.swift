@@ -43,13 +43,13 @@ final class MainTableViewCell: UITableViewCell {
     private func profitСolorСhanges() {
         let percent = viewModel.percentFloat
         let purchase = viewModel.purchaseFloat
-
+        
         if percent.sign == .minus, purchase.sign == .minus {
             self.percentLabel.textColor = .systemPink
             self.purchaseLabel.textColor = .systemPink
         } else {
             self.percentLabel.textColor = .systemMint
-            self.purchaseLabel.textColor = .systemTeal
+            self.purchaseLabel.textColor = .systemMint
         }
     }
 }

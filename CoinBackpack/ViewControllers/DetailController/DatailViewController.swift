@@ -189,11 +189,14 @@ extension DatailViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         var shouldChange : Bool = true
         let newCharSet = CharacterSet.init(charactersIn: "!@#$%^&*(){},?/|[]§±<>-_=+'")
-        let numberString = (textField.text ?? "").replacingOccurrences(of: ",", with: ".").components(separatedBy: newCharSet).joined(separator: ".")
+        let numberString = (textField.text ?? "")
+            .replacingOccurrences(of: ",", with: ".")
+            .components(separatedBy: newCharSet).joined(separator: ".")
+        guard let character = string.first else { return true }
 
-            if Character(string) == ".", !numberString.contains("."), !numberString.isEmpty {
+            if character == ".", !numberString.contains("."), !numberString.isEmpty {
                 shouldChange = true
-            } else if Character(string).isNumber {
+            } else if character.isNumber {
                 shouldChange = true
             } else {
                 shouldChange = false

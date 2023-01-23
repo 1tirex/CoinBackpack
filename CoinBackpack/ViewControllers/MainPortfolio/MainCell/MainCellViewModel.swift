@@ -43,11 +43,11 @@ final class MainCellViewModel: MainCellViewModelProtocol {
     }
     
     var percent: String {
-        "\(String(format: "%.2f", (coin.price - coin.purchase) / (coin.purchase / coin.price)))%"
+        "\(String(format: "%.2f", (coin.price * coin.amount) - (coin.purchase * coin.amount) / (coin.amount * coin.purchase) / coin.price))%"
     }
     
     var purchase: String {
-        "\(String(format: "%.2f", coin.price - coin.purchase))$"
+        "\(String(format: "%.2f", (coin.price - coin.purchase) * coin.amount))$"
     }
     
     var image: String {
