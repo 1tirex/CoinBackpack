@@ -24,3 +24,5 @@ New design:
 <code><img height="500" src="https://user-images.githubusercontent.com/108235206/214099510-57836c9e-37dc-45bb-afbc-8e1fdd5f0da0.png"></code>
 <code><img height="500" src="https://user-images.githubusercontent.com/108235206/214099513-57eb30a8-407e-44c2-9b0f-dee1695b09b5.png"></code>
 <code><img height="500" src="https://user-images.githubusercontent.com/108235206/214099521-7a668780-d151-44b6-bec8-0c4857c31bc9.png"></code>
+
+Rebuilt project with continuation - https://github.com/1tirex/AlphaAltcoinsPortfolio
